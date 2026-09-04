@@ -44,5 +44,39 @@ namespace GUI
             FormBitacora b = new FormBitacora();
             b.ShowDialog();
         }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            var confirmar = MessageBox.Show(
+            "¿Seguro que querés cerrar sesión?",
+            "Cerrar sesión",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question);
+
+            if (confirmar != DialogResult.Yes)
+                return;
+
+            foreach (Form hijo in this.MdiChildren)
+            {
+                hijo.Close();
+            }
+
+            var bll = new LoginBLL();
+            bll.CerrarSesion();
+
+            this.Hide();
+
+            using (FormLogin login = new FormLogin())
+            {
+                if (login.ShowDialog() == DialogResult.OK)
+                {
+                    this.Show();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            }
+        }
     }
 }

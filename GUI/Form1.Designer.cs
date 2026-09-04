@@ -32,6 +32,7 @@
             this.gestorDeClientesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.formConsultasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.formBitacoraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnLogout = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,13 +69,23 @@
             this.formBitacoraToolStripMenuItem.Text = "FormBitacora";
             this.formBitacoraToolStripMenuItem.Click += new System.EventHandler(this.formBitacoraToolStripMenuItem_Click);
             // 
+            // btnLogout
+            // 
+            this.btnLogout.Location = new System.Drawing.Point(13, 372);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(120, 28);
+            this.btnLogout.TabIndex = 4;
+            this.btnLogout.Text = "Cerrar sesión";
+            this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::GUI.Properties.Resources.image;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(869, 412);
+            this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.menuStrip1);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
@@ -93,6 +104,7 @@
         private System.Windows.Forms.ToolStripMenuItem gestorDeClientesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem formConsultasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem formBitacoraToolStripMenuItem;
+        private System.Windows.Forms.Button btnLogout;
     }
 }
 

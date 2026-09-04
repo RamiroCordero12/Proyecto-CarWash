@@ -29,8 +29,7 @@ namespace GUI
             {
                 UsuarioLogueado = bll.IniciarSesion(txtNombreUsuario.Text.Trim(), txtContraseña.Text);
                 this.DialogResult = DialogResult.OK;
-                Form1 mainForm = new Form1(); 
-                mainForm.Show();
+                // Ya NO crea Form1 acá — se lo dejamos a quien abrió este FormLogin
             }
             catch (Exception ex)
             {
@@ -38,6 +37,19 @@ namespace GUI
                 txtContraseña.Clear();
                 txtContraseña.Focus();
             }
+            //try
+            //{
+            //    UsuarioLogueado = bll.IniciarSesion(txtNombreUsuario.Text.Trim(), txtContraseña.Text);
+            //    this.DialogResult = DialogResult.OK;
+            //    Form1 mainForm = new Form1(); 
+            //    mainForm.Show();
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "Error de acceso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    txtContraseña.Clear();
+            //    txtContraseña.Focus();
+            //}
         }
     }
 }
