@@ -1,4 +1,6 @@
-﻿using CarWash.BE;
+﻿using BLL.Bitacora;
+using CarWash.BE;
+using CarWash.BE.Bitacora;
 using DAL;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,7 @@ namespace BLL
     {
         private UsuarioDAL dal = new UsuarioDAL();
         private PermisoBLL permisoBLL = new PermisoBLL();
+        private RegistroBitacoraBLL bitacoraBLL = new RegistroBitacoraBLL();
 
         public Usuario IniciarSesion(string nombreUsuario, string contrasenaPlana)
         {
@@ -22,30 +25,49 @@ namespace BLL
                 throw new Exception("Debes ingresar la contraseña");
 
             string hash = HashSHA256(contrasenaPlana);
-
             Usuario usuario = dal.ValidarCredenciales(nombreUsuario, hash);
 
             if (usuario == null)
-                throw new Exception("Usuario o contraseña incorrectos");
+            {
+                // Login fallido: criticidad Alta, sin IdUsuario válido conocido
+                bitacoraBLL.Registrar(
+                    idUsuario: null, // ver nota sobre FK nullable más abajo
+                    accion: $"Intento de login fallido - usuario ingresado: {nombreUsuario}",
+                    modulo: "Login",
+                    criticidad: Criticidad.Alta);
 
-            // Arma el árbol completo y resuelve el Rol de este usuario contra él
+                throw new Exception("Usuario o contraseña incorrectos");
+            }
+
             var arbolFamilias = permisoBLL.ConstruirArbolFamilias();
             string nombreRol = dal.ObtenerNombreRol(usuario.CodRol);
             Rol rolCompleto = permisoBLL.CargarRolCompleto(usuario.CodRol, nombreRol, arbolFamilias);
-
             usuario.Rol = rolCompleto;
 
-            // Acá se puebla el Singleton
             SesionActual.Instancia.IniciarSesion(usuario, rolCompleto);
 
-            // TODO Fase 3: registrar en Bitácora (login exitoso)
+            bitacoraBLL.Registrar(
+                idUsuario: usuario.IdUsuario,
+                accion: "Inicio de sesión exitoso",
+                modulo: "Login",
+                criticidad: Criticidad.Media);
 
             return usuario;
         }
 
         public void CerrarSesion()
         {
-            // TODO Fase 3: registrar en Bitácora (logout)
+            var usuarioActual = SesionActual.Instancia.UsuarioLogueado;
+
+            if (usuarioActual != null)
+            {
+                bitacoraBLL.Registrar(
+                    idUsuario: usuarioActual.IdUsuario,
+                    accion: "Cierre de sesión",
+                    modulo: "Login",
+                    criticidad: Criticidad.Baja);
+            }
+
             SesionActual.Instancia.CerrarSesion();
         }
 
@@ -60,5 +82,7 @@ namespace BLL
                 return sb.ToString();
             }
         }
+
+
     }
 }

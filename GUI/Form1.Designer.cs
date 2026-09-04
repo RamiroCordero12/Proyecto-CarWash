@@ -31,6 +31,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.gestorDeClientesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.formConsultasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.formBitacoraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -38,7 +39,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.gestorDeClientesToolStripMenuItem,
-            this.formConsultasToolStripMenuItem});
+            this.formConsultasToolStripMenuItem,
+            this.formBitacoraToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(869, 24);
@@ -58,6 +60,13 @@
             this.formConsultasToolStripMenuItem.Size = new System.Drawing.Size(99, 20);
             this.formConsultasToolStripMenuItem.Text = "FormConsultas";
             this.formConsultasToolStripMenuItem.Click += new System.EventHandler(this.formConsultasToolStripMenuItem_Click);
+            // 
+            // formBitacoraToolStripMenuItem
+            // 
+            this.formBitacoraToolStripMenuItem.Name = "formBitacoraToolStripMenuItem";
+            this.formBitacoraToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
+            this.formBitacoraToolStripMenuItem.Text = "FormBitacora";
+            this.formBitacoraToolStripMenuItem.Click += new System.EventHandler(this.formBitacoraToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -83,6 +92,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem gestorDeClientesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem formConsultasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem formBitacoraToolStripMenuItem;
     }
 }
 

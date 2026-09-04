@@ -174,9 +174,11 @@ GO
 
 -- =============================================
 -- 4. AUDITORÍA
+-- =============================================
+
 CREATE TABLE Bitacora (
     IdBitacora INT IDENTITY(1,1) PRIMARY KEY,
-    IdUsuario  INT NOT NULL,
+    IdUsuario  INT NULL,
     Accion     VARCHAR(255) NOT NULL,
     FechaHora  DATETIME NOT NULL DEFAULT GETDATE(),
     Modulo     VARCHAR(100) NOT NULL,
@@ -212,4 +214,16 @@ BEGIN
         THROW 50015, 'Error al completar el servicio de lavado.', 1;
     END CATCH
 END;
+GO
+-- =============================================
+-- 6. USUARIO BASICO PARA LOGIN DE PRUEBAS
+-- =============================================
+INSERT INTO Roles (NombreRol, DescRol)
+VALUES ('AdminBasico', 'Rol creado para las pruebas')
+GO
+
+INSERT INTO Usuario (Nombre, Apellido, Email, NombreUsuario,
+    Contrasena, CodRol)
+VALUES ('Ramiro', 'Cordero', 'cordero14@gmail.com', 'ramiro',
+    '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 1)
 GO
