@@ -33,6 +33,7 @@
             this.formConsultasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.formBitacoraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnLogout = new System.Windows.Forms.Button();
+            this.formVehiculosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,7 +42,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.gestorDeClientesToolStripMenuItem,
             this.formConsultasToolStripMenuItem,
-            this.formBitacoraToolStripMenuItem});
+            this.formBitacoraToolStripMenuItem,
+            this.formVehiculosToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(869, 24);
@@ -79,6 +81,13 @@
             this.btnLogout.UseVisualStyleBackColor = true;
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
+            // formVehiculosToolStripMenuItem
+            // 
+            this.formVehiculosToolStripMenuItem.Name = "formVehiculosToolStripMenuItem";
+            this.formVehiculosToolStripMenuItem.Size = new System.Drawing.Size(97, 20);
+            this.formVehiculosToolStripMenuItem.Text = "FormVehiculos";
+            this.formVehiculosToolStripMenuItem.Click += new System.EventHandler(this.formVehiculosToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -105,6 +114,7 @@
         private System.Windows.Forms.ToolStripMenuItem formConsultasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem formBitacoraToolStripMenuItem;
         private System.Windows.Forms.Button btnLogout;
+        private System.Windows.Forms.ToolStripMenuItem formVehiculosToolStripMenuItem;
     }
 }
 

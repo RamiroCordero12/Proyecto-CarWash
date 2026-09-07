@@ -78,5 +78,11 @@ namespace GUI
                 }
             }
         }
+
+        private void formVehiculosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormVehiculos f = new FormVehiculos();
+            f.ShowDialog();
+        }
     }
 }

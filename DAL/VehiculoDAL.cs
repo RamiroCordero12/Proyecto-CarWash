@@ -26,7 +26,14 @@ namespace DAL
                 cmd.Parameters.AddWithValue("@DNI", vehiculo.DNI);
                 cmd.Parameters.AddWithValue("@Marca", (object)vehiculo.Marca ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@Color", (object)vehiculo.Color ?? DBNull.Value);
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex) when (ex.Number == 547)
+                {
+                    throw new Exception("El DNI ingresado no corresponde a ningún cliente registrado");
+                }
             }
         }
 
@@ -98,4 +105,5 @@ namespace DAL
             }
             return lista;
         }
+    }
 }

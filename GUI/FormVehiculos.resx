@@ -117,4 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Apartado que se encarga de la gestión de vehiculos.
+Para agregar un Vehiculo, debera seleccionar la fila del cliente al que el vehiculo esté vinculado, al 
+hacer esto se completara el campo "DNI del Cliente" con el DNI del cliente seleccionado.
+Tambien debera seguir el patron de Patentes argentinas para agregar uno, estos patrones son aaa111 
+o aa111aa. 
+
+</value>
+  </data>
 </root>
