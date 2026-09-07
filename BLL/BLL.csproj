@@ -47,6 +47,7 @@
     <Compile Include="PermisoBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SesionActual.cs" />
+    <Compile Include="VehiculoBLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BE\BE.csproj">

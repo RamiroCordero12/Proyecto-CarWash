@@ -52,6 +52,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Login\UsuarioDAL.cs" />
+    <Compile Include="VehiculoDAL.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

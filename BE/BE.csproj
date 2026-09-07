@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="Bitacora\Criticidad.cs" />
     <Compile Include="Bitacora\RegistroBitacoraBE.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Cliente.cs" />
     <Compile Include="ConsumoInsumo.cs" />
     <Compile Include="EstadoOperador.cs" />
@@ -57,13 +56,13 @@
     <Compile Include="PaqueteServicio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rol.cs" />
-    <Compile Include="Sedan.cs" />
+    <Compile Include="Vehiculo\Sedan.cs" />
     <Compile Include="ServiIndividual.cs" />
-    <Compile Include="SUV_Camioneta.cs" />
+    <Compile Include="Vehiculo\SUV_Camioneta.cs" />
     <Compile Include="Turno.cs" />
     <Compile Include="TurnoEventArgs.cs" />
-    <Compile Include="Usuario.cs" />
-    <Compile Include="Vehiculo.cs" />
+    <Compile Include="Usuario\Usuario.cs" />
+    <Compile Include="Vehiculo\Vehiculo.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

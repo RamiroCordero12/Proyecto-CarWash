@@ -26,6 +26,8 @@ CREATE TABLE Vehiculos (
     IdVehiculo   INT IDENTITY(1,1) PRIMARY KEY,
     Patente      VARCHAR(50) UNIQUE NOT NULL,
     TipoVehiculo VARCHAR(50) NOT NULL, -- 'Sedan', 'SUV'
+    Marca        VARCHAR(50) NOT NULL,
+    Color        VARCHAR(50) NOT NULL,
     DNI          VARCHAR(20) NOT NULL,
     FOREIGN KEY (DNI) REFERENCES Clientes(DNI)
 );

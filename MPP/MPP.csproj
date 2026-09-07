@@ -45,6 +45,7 @@
     <Compile Include="ClienteMPP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistroBitacoraMPP.cs" />
+    <Compile Include="VehiculoMPP.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BE\BE.csproj">

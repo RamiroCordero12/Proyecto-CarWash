@@ -10,7 +10,7 @@ namespace CarWash.BE
     {
         public int IdVehiculo { get; set; }
 
-        public int IdCliente { get; set; }
+        public int DNI { get; set; }
 
         public string Patente { get; set; }
 
