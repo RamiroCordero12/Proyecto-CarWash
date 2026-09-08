@@ -13,9 +13,9 @@ namespace DAL
     public class ClienteDAL : IABM<Cliente, string>
     {
         ConexionBD conexion = new ConexionBD();
-     
+
         // Modo Conectado(Altas) 
-        
+
         public void Agregar(Cliente cliente)
         {
             using (SqlConnection conn = conexion.ValidarConexion())
@@ -100,16 +100,43 @@ namespace DAL
             return ds;
         }
 
-        // EJEMPLO MODO DESCONECTADO (Consultas) con DataView
-        
-        public DataTable BuscarPorApellido(DataSet dsOrigen, string apellido)
+        // Búsqueda combinada sobre el DataSet ya cargado (modo desconectado, con DataView).
+        // Todos los parámetros son opcionales y se combinan con AND — si no se pasa
+        // ninguno, el RowFilter queda vacío y devuelve todo.
+        //
+        // Reemplaza al viejo BuscarPorApellido, que solo filtraba por un campo 
+       
+        public DataTable Buscar(
+            DataSet dsOrigen,
+            string dni = null,
+            string nombre = null,
+            string apellido = null,
+            string telefono = null)
         {
-            
             DataView vista = new DataView(dsOrigen.Tables["Clientes"]);
-            vista.RowFilter = $"Apellido LIKE '%{apellido}%'";
-            return vista.ToTable(); 
+
+            var condiciones = new List<string>();
+
+            if (!string.IsNullOrWhiteSpace(dni))
+                condiciones.Add($"DNI LIKE '%{EscaparFiltro(dni)}%'");
+
+            if (!string.IsNullOrWhiteSpace(nombre))
+                condiciones.Add($"Nombre LIKE '%{EscaparFiltro(nombre)}%'");
+
+            if (!string.IsNullOrWhiteSpace(apellido))
+                condiciones.Add($"Apellido LIKE '%{EscaparFiltro(apellido)}%'");
+
+            if (!string.IsNullOrWhiteSpace(telefono))
+                condiciones.Add($"Telefono LIKE '%{EscaparFiltro(telefono)}%'");
+
+            vista.RowFilter = string.Join(" AND ", condiciones);
+
+            return vista.ToTable();
         }
 
-
+        private static string EscaparFiltro(string valor)
+        {
+            return valor.Replace("'", "''");
+        }
     }
 }

@@ -70,9 +70,18 @@ namespace BLL
             return dal.ListarDataSet();
         }
 
-        public DataTable BuscarPorApellido(DataSet ds, string apellido)
+        // Búsqueda combinada — reemplaza a BuscarPorApellido.
+        // Todos los parámetros son opcionales; los que se pasan se combinan con AND.
+        // dsOrigen es el DataSet ya cargado (modo desconectado), tal como lo pedía
+        // el método anterior.
+        public DataTable Buscar(
+            DataSet dsOrigen,
+            string dni = null,
+            string nombre = null,
+            string apellido = null,
+            string telefono = null)
         {
-            return dal.BuscarPorApellido(ds, apellido);
+            return dal.Buscar(dsOrigen, dni, nombre, apellido, telefono);
         }
 
         // Devuelve el Id del usuario logueado, o null si por algún motivo
