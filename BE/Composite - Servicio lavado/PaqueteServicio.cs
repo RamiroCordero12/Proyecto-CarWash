@@ -10,7 +10,7 @@ namespace CarWash.BE
     {
         public int IdPaquete { get; set; }
         public string Nombre { get; set; }
-        public decimal DescuentoPorcetanje { get; set; }
+        public decimal DescuentoPorcentanje { get; set; }
         public decimal PrecioFinal { get; set; }
         public List<IComponenteServicio> Componentes { get; set; }
 
@@ -46,7 +46,7 @@ namespace CarWash.BE
         {
             decimal subtotal = ObtenerPrecioSinDescuento();
 
-            decimal descuento = subtotal * (DescuentoPorcetanje / 100m);
+            decimal descuento = subtotal * (DescuentoPorcentanje / 100m);
 
             PrecioFinal = subtotal - descuento;
 

@@ -37,6 +37,10 @@ namespace GUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+
+
+
         }
 
         private void formBitacoraToolStripMenuItem_Click(object sender, EventArgs e)
