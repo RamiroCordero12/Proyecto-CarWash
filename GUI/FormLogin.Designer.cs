@@ -28,68 +28,69 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.btnLogin = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.txtNombreUsuario = new System.Windows.Forms.TextBox();
             this.txtContraseña = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnLogin = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // txtNombreUsuario
-            // 
-            this.txtNombreUsuario.Location = new System.Drawing.Point(12, 33);
-            this.txtNombreUsuario.Name = "txtNombreUsuario";
-            this.txtNombreUsuario.Size = new System.Drawing.Size(100, 20);
-            this.txtNombreUsuario.TabIndex = 0;
-            // 
-            // txtContraseña
-            // 
-            this.txtContraseña.Location = new System.Drawing.Point(12, 72);
-            this.txtContraseña.Name = "txtContraseña";
-            this.txtContraseña.Size = new System.Drawing.Size(100, 20);
-            this.txtContraseña.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Usernanme";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 56);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Password";
             // 
             // btnLogin
             // 
             this.btnLogin.Location = new System.Drawing.Point(12, 98);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(75, 23);
-            this.btnLogin.TabIndex = 4;
+            this.btnLogin.TabIndex = 0;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = true;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(13, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Username";
+            // 
+            // txtNombreUsuario
+            // 
+            this.txtNombreUsuario.Location = new System.Drawing.Point(13, 30);
+            this.txtNombreUsuario.Name = "txtNombreUsuario";
+            this.txtNombreUsuario.Size = new System.Drawing.Size(100, 20);
+            this.txtNombreUsuario.TabIndex = 2;
+            // 
+            // txtContraseña
+            // 
+            this.txtContraseña.Location = new System.Drawing.Point(12, 72);
+            this.txtContraseña.Name = "txtContraseña";
+            this.txtContraseña.Size = new System.Drawing.Size(100, 20);
+            this.txtContraseña.TabIndex = 4;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 55);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Password";
             // 
             // FormLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::GUI.Properties.Resources.images;
-            this.ClientSize = new System.Drawing.Size(419, 358);
-            this.Controls.Add(this.btnLogin);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(397, 337);
             this.Controls.Add(this.txtContraseña);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.txtNombreUsuario);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnLogin);
             this.Name = "FormLogin";
             this.Text = "FormLogin";
+            this.Load += new System.EventHandler(this.FormLogin_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -97,10 +98,10 @@
 
         #endregion
 
+        private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtNombreUsuario;
         private System.Windows.Forms.TextBox txtContraseña;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnLogin;
     }
 }

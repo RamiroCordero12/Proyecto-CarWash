@@ -34,6 +34,7 @@
             this.formBitacoraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.formVehiculosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnLogout = new System.Windows.Forms.Button();
+            this.formServiciosLavadosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,7 +44,8 @@
             this.gestorDeClientesToolStripMenuItem,
             this.formConsultasToolStripMenuItem,
             this.formBitacoraToolStripMenuItem,
-            this.formVehiculosToolStripMenuItem});
+            this.formVehiculosToolStripMenuItem,
+            this.formServiciosLavadosToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(869, 24);
@@ -88,6 +90,13 @@
             this.btnLogout.UseVisualStyleBackColor = true;
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
+            // formServiciosLavadosToolStripMenuItem
+            // 
+            this.formServiciosLavadosToolStripMenuItem.Name = "formServiciosLavadosToolStripMenuItem";
+            this.formServiciosLavadosToolStripMenuItem.Size = new System.Drawing.Size(136, 20);
+            this.formServiciosLavadosToolStripMenuItem.Text = "FormServiciosLavados";
+            this.formServiciosLavadosToolStripMenuItem.Click += new System.EventHandler(this.formServiciosLavadosToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -116,6 +125,7 @@
         private System.Windows.Forms.ToolStripMenuItem formBitacoraToolStripMenuItem;
         private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.ToolStripMenuItem formVehiculosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem formServiciosLavadosToolStripMenuItem;
     }
 }
 

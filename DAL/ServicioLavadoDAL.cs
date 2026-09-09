@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CarWash.BE;
+using MPP;
 
 namespace DAL
 {
@@ -11,18 +13,9 @@ namespace DAL
     {
         ConexionBD conexion = new ConexionBD();
 
-        // Fila cruda de ServicioLavado, sin armar todavía el Composite
-        public class FilaServicio
+        private List<ServicioLavadoMPP.FilaServicio> ListarFilas()
         {
-            public int IdServicio { get; set; }
-            public string Nombre { get; set; }
-            public decimal PrecioBase { get; set; }
-            public bool EsCombo { get; set; }
-        }
-
-        public List<FilaServicio> ListarFilas()
-        {
-            var lista = new List<FilaServicio>();
+            var lista = new List<ServicioLavadoMPP.FilaServicio>();
             using (SqlConnection conn = conexion.ValidarConexion())
             {
                 conn.Open();
@@ -31,20 +24,13 @@ namespace DAL
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    lista.Add(new FilaServicio
-                    {
-                        IdServicio = reader.GetInt32(0),
-                        Nombre = reader.GetString(1),
-                        PrecioBase = reader.GetDecimal(2),
-                        EsCombo = reader.GetBoolean(3)
-                    });
+                    lista.Add(ServicioLavadoMPP.MapearFilaDesdeReader(reader));
                 }
             }
             return lista;
         }
 
-        // Relación combo -> componente
-        public List<(int IdCombo, int IdServicio)> ListarJerarquia()
+        private List<(int IdCombo, int IdServicio)> ListarJerarquia()
         {
             var lista = new List<(int, int)>();
             using (SqlConnection conn = conexion.ValidarConexion())
@@ -54,6 +40,38 @@ namespace DAL
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
                     lista.Add((reader.GetInt32(0), reader.GetInt32(1)));
+            }
+            return lista;
+        }
+
+        // Único método público de lectura del árbol: el DAL orquesta
+        // ListarFilas() + ListarJerarquia() + MPP.ArmarArbol(), y a BLL
+        // le entrega el resultado ya armado como objetos de dominio (BE puro)
+        public List<IComponenteServicio> ListarArbol()
+        {
+            var filas = ListarFilas();
+            var jerarquia = ListarJerarquia();
+            return ServicioLavadoMPP.ArmarArbol(filas, jerarquia);
+        }
+
+        // Para el combo de selección al armar un paquete nuevo:
+        // devuelve solo los ServiIndividual, ya como objetos de dominio
+        public List<ServiIndividual> ListarServiciosIndividuales()
+        {
+            var filas = ListarFilas();
+            var lista = new List<ServiIndividual>();
+
+            foreach (var fila in filas)
+            {
+                if (!fila.EsCombo)
+                {
+                    lista.Add(new ServiIndividual
+                    {
+                        IdServicio = fila.IdServicio,
+                        Nombre = fila.Nombre,
+                        Precio = fila.PrecioBase
+                    });
+                }
             }
             return lista;
         }
@@ -107,7 +125,6 @@ namespace DAL
             using (SqlConnection conn = conexion.ValidarConexion())
             {
                 conn.Open();
-                // Primero limpiar relaciones donde participe (como combo o como componente)
                 var cmdJerarquia = new SqlCommand(
                     "DELETE FROM LavadoJerarquia WHERE IdCombo = @Id OR IdServicio = @Id", conn);
                 cmdJerarquia.Parameters.AddWithValue("@Id", idServicio);

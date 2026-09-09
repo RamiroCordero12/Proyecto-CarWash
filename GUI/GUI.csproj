@@ -76,6 +76,12 @@
     <Compile Include="FormLogin.Designer.cs">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormServiciosLavado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormServiciosLavado.Designer.cs">
+      <DependentUpon>FormServiciosLavado.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormVehiculos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormServiciosLavado.resx">
+      <DependentUpon>FormServiciosLavado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormVehiculos.resx">
       <DependentUpon>FormVehiculos.cs</DependentUpon>

@@ -15,7 +15,7 @@ namespace DAL
         //---------------------------------------------------
         //Cadena casa de joaquin: "Data Source=DESKTOP-TNGM33F\SQLEXPRESS;Initial Catalog=CarWashDB;Integrated Security=True;Encrypt=False;TrustServerCertificate=True";
         //---------------------------------------------------
-        string cadenaConexion = "Data Source=DESKTOP-TNGM33F\\SQLEXPRESS;Initial Catalog=CarWashDB;Integrated Security=True;Encrypt=False;TrustServerCertificate=True";
+        string cadenaConexion = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CarWashDB;Integrated Security=True;Encrypt=False;TrustServerCertificate=True";
 
         //Metodo que valida la conexion con la base de datos
         public SqlConnection ValidarConexion()

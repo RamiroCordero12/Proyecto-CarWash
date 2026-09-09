@@ -88,5 +88,11 @@ namespace GUI
             FormVehiculos f = new FormVehiculos();
             f.ShowDialog();
         }
+
+        private void formServiciosLavadosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormServiciosLavado f = new FormServiciosLavado();
+            f.ShowDialog();
+        }
     }
 }
