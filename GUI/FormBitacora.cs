@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,19 +21,42 @@ namespace GUI
         public FormBitacora()
         {
             InitializeComponent();
+            dgvBitacora.ColumnHeadersDefaultCellStyle = BuildHeaderStyle();
+            dgvBitacora.DefaultCellStyle = BuildCellStyle();
+        }
+
+        private DataGridViewCellStyle BuildHeaderStyle()
+        {
+            return new DataGridViewCellStyle
+            {
+                BackColor = Color.FromArgb(0, 131, 143),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold),
+                Alignment = DataGridViewContentAlignment.MiddleLeft,
+                Padding = new Padding(8, 0, 0, 0)
+            };
+        }
+
+        private DataGridViewCellStyle BuildCellStyle()
+        {
+            return new DataGridViewCellStyle
+            {
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(55, 71, 79),
+                Font = new Font("Segoe UI", 9.5F),
+                SelectionBackColor = Color.FromArgb(178, 235, 242),
+                SelectionForeColor = Color.FromArgb(38, 50, 56),
+                Padding = new Padding(8, 0, 0, 0)
+            };
         }
 
         private void FormBitacora_Load(object sender, EventArgs e)
         {
-            // Combo de criticidad: opción "Todas" + los valores del enum
             cmbCriticidad.Items.Add("(Todas)");
             cmbCriticidad.Items.AddRange(Enum.GetNames(typeof(Criticidad)));
             cmbCriticidad.SelectedIndex = 0;
-
-            // Rango por defecto: últimos 30 días
             dtpDesde.Value = DateTime.Today.AddDays(-30);
             dtpHasta.Value = DateTime.Today;
-
             CargarGrilla();
         }
 
@@ -48,13 +72,11 @@ namespace GUI
         {
             string usuario = string.IsNullOrWhiteSpace(txtUsuario.Text) ? null : txtUsuario.Text.Trim();
             string modulo = string.IsNullOrWhiteSpace(txtModulo.Text) ? null : txtModulo.Text.Trim();
-
             Criticidad? criticidad = null;
-            if (cmbCriticidad.SelectedIndex > 0) // 0 = "(Todas)"
+            if (cmbCriticidad.SelectedIndex > 0)
             {
                 criticidad = (Criticidad)Enum.Parse(typeof(Criticidad), cmbCriticidad.SelectedItem.ToString());
             }
-
             CargarGrilla(usuario, dtpDesde.Value.Date, dtpHasta.Value.Date, criticidad, modulo);
         }
 

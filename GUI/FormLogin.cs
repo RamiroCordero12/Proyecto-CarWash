@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,6 @@ namespace GUI
             {
                 UsuarioLogueado = bll.IniciarSesion(txtNombreUsuario.Text.Trim(), txtContraseña.Text);
                 this.DialogResult = DialogResult.OK;
-                // Ya NO crea Form1 acá — se lo dejamos a quien abrió este FormLogin
             }
             catch (Exception ex)
             {
@@ -40,6 +40,14 @@ namespace GUI
         private void FormLogin_Load(object sender, EventArgs e)
         {
             txtNombreUsuario.Focus();
+        }
+
+        private void FormLogin_Paint(object sender, PaintEventArgs e)
+        {
+            using (LinearGradientBrush brush = new LinearGradientBrush(this.ClientRectangle, Color.FromArgb(10, 22, 40), Color.FromArgb(26, 41, 64), 90F))
+            {
+                e.Graphics.FillRectangle(brush, this.ClientRectangle);
+            }
         }
     }
 }
