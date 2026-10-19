@@ -26,6 +26,7 @@ namespace GUI
             this.panelLogo = new System.Windows.Forms.Panel();
             this.lblVersion = new System.Windows.Forms.Label();
             this.lblLogo = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.panelSidebar.SuspendLayout();
             this.panelLogo.SuspendLayout();
             this.SuspendLayout();
@@ -33,6 +34,7 @@ namespace GUI
             // panelSidebar
             // 
             this.panelSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(31)))), ((int)(((byte)(60)))));
+            this.panelSidebar.Controls.Add(this.button1);
             this.panelSidebar.Controls.Add(this.btnMenuBitacora);
             this.panelSidebar.Controls.Add(this.btnMenuConsultas);
             this.panelSidebar.Controls.Add(this.btnMenuServicios);
@@ -46,6 +48,7 @@ namespace GUI
             this.panelSidebar.Name = "panelSidebar";
             this.panelSidebar.Size = new System.Drawing.Size(220, 650);
             this.panelSidebar.TabIndex = 0;
+            this.panelSidebar.Paint += new System.Windows.Forms.PaintEventHandler(this.panelSidebar_Paint);
             // 
             // btnMenuBitacora
             // 
@@ -181,7 +184,7 @@ namespace GUI
             this.lblVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(110)))), ((int)(((byte)(122)))));
             this.lblVersion.Location = new System.Drawing.Point(25, 45);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(94, 13);
+            this.lblVersion.Size = new System.Drawing.Size(93, 13);
             this.lblVersion.TabIndex = 1;
             this.lblVersion.Text = "Panel de Control";
             // 
@@ -192,9 +195,27 @@ namespace GUI
             this.lblLogo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
             this.lblLogo.Location = new System.Drawing.Point(12, 15);
             this.lblLogo.Name = "lblLogo";
-            this.lblLogo.Size = new System.Drawing.Size(183, 30);
+            this.lblLogo.Size = new System.Drawing.Size(184, 30);
             this.lblLogo.TabIndex = 0;
             this.lblLogo.Text = "💧 AQUA WASH";
+            // 
+            // button1
+            // 
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(190)))), ((int)(((byte)(197)))));
+            this.button1.Location = new System.Drawing.Point(0, 307);
+            this.button1.Name = "button1";
+            this.button1.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.button1.Size = new System.Drawing.Size(220, 45);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "  Operarios";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
@@ -226,5 +247,6 @@ namespace GUI
         private System.Windows.Forms.Button btnMenuConsultas;
         private System.Windows.Forms.Button btnMenuBitacora;
         private System.Windows.Forms.Button btnLogout;
+        private System.Windows.Forms.Button button1;
     }
 }
