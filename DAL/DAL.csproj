@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Login\UsuarioDAL.cs" />
     <Compile Include="ServicioLavadoDAL.cs" />
+    <Compile Include="TurnoDAL.cs" />
     <Compile Include="VehiculoDAL.cs" />
   </ItemGroup>
   <ItemGroup>

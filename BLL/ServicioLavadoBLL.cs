@@ -79,5 +79,14 @@ namespace BLL
         {
             return SesionActual.Instancia.UsuarioLogueado?.IdUsuario;
         }
+        
+        // Para elegir en un turno: todos los servicios individuales + los combos
+        public List<IComponenteServicio> ListarParaTurno()
+        {
+            var resultado = new List<IComponenteServicio>();
+            resultado.AddRange(dal.ListarServiciosIndividuales());
+            resultado.AddRange(dal.ListarArbol().OfType<PaqueteServicio>());
+            return resultado;
+        }
     }
 }

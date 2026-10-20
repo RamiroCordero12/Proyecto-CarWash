@@ -92,5 +92,21 @@ namespace BLL
         {
             return SesionActual.Instancia.UsuarioLogueado?.IdUsuario;
         }
+
+        public List<Cliente> FiltrarPorTexto(string texto)
+        {
+            var lista = dal.Listar();
+            if (string.IsNullOrWhiteSpace(texto)) return lista;
+
+            texto = texto.Trim();
+            return lista.Where(c => Contiene(c.DNI, texto)
+                                 || Contiene(c.Nombre, texto)
+                                 || Contiene(c.Apellido, texto)).ToList();
+        }
+
+        private bool Contiene(string campo, string texto)
+        {
+            return campo != null && campo.IndexOf(texto, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
     }
 }

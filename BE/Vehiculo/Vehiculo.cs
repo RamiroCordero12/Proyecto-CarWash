@@ -50,5 +50,9 @@ namespace CarWash.BE
         {
             return $"{Patente} - {Marca} - {Tipo}";
         }
+        public virtual decimal CalcularRecargo()
+        {
+            return 0m;
+        }
     }
 }

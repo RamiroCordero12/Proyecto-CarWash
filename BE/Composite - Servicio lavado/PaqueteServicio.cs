@@ -44,13 +44,9 @@ namespace CarWash.BE
 
         public decimal ObtenerPrecio()
         {
-            decimal subtotal = ObtenerPrecioSinDescuento();
-
-            decimal descuento = subtotal * (DescuentoPorcentanje / 100m);
-
-            PrecioFinal = subtotal - descuento;
-
-            return PrecioFinal;
+            // Si el combo tiene precio promocional fijado, ese manda
+            if (PrecioFinal > 0) return PrecioFinal;
+            return ObtenerPrecioSinDescuento();
         }
 
         public string ObtenerDescripcion()

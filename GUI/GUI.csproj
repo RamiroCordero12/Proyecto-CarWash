@@ -88,6 +88,12 @@
     <Compile Include="FormServiciosLavado.Designer.cs">
       <DependentUpon>FormServiciosLavado.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormTurnos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTurnos.Designer.cs">
+      <DependentUpon>FormTurnos.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormVehiculos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +102,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ucSelectorCliente.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucSelectorCliente.Designer.cs">
+      <DependentUpon>ucSelectorCliente.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -117,6 +129,9 @@
     <EmbeddedResource Include="FormServiciosLavado.resx">
       <DependentUpon>FormServiciosLavado.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormTurnos.resx">
+      <DependentUpon>FormTurnos.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormVehiculos.resx">
       <DependentUpon>FormVehiculos.cs</DependentUpon>
     </EmbeddedResource>
@@ -130,6 +145,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ucSelectorCliente.resx">
+      <DependentUpon>ucSelectorCliente.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

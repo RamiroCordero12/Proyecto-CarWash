@@ -148,6 +148,8 @@ GO
 -- =============================================
 
 -- TURNOS (tabla central del negocio)
+-- Estado guarda el nombre del enum EstadoTurno (BE):
+-- 'Pendiente', 'Asignado', 'EnLavado', 'LavadoTerminado', 'Entregado', 'Cancelado'
 CREATE TABLE TurnoWash (
     IdTurno           INT IDENTITY(1,1) PRIMARY KEY,
     IdVehiculo        INT NOT NULL,
@@ -155,7 +157,7 @@ CREATE TABLE TurnoWash (
     IdOperario        INT NOT NULL,
     IdUsuarioRegistro INT NOT NULL, -- usuario del sistema que cargó el turno (para auditoría en Bitacora)
     FechaHora         DATETIME NOT NULL,
-    Estado            VARCHAR(50) NOT NULL DEFAULT 'EnEspera', -- 'EnEspera', 'Finalizado'
+    Estado            VARCHAR(50) NOT NULL DEFAULT 'Pendiente', -- CAMBIO: antes 'EnEspera'
     Precio            DECIMAL(18,2) NOT NULL, -- monto final cobrado, fijado al momento de crear el turno
     FOREIGN KEY (IdVehiculo) REFERENCES Vehiculos(IdVehiculo),
     FOREIGN KEY (IdServicio) REFERENCES ServicioLavado(IdServicio),
@@ -164,7 +166,7 @@ CREATE TABLE TurnoWash (
 );
 GO
 
--- ALERTA DE ENTREGA (Observer: disparado cuando el turno se marca Finalizado)
+-- ALERTA DE ENTREGA (Observer: disparado cuando el turno pasa a LavadoTerminado)
 CREATE TABLE AlertaEntregaWash (
     IdAlerta        INT IDENTITY(1,1) PRIMARY KEY,
     IdTurno         INT NOT NULL,
@@ -200,7 +202,7 @@ BEGIN
     BEGIN TRANSACTION;
     BEGIN TRY
         UPDATE TurnoWash
-        SET Estado = 'Finalizado'
+        SET Estado = 'LavadoTerminado' -- CAMBIO: antes 'Finalizado'
         WHERE IdTurno = @IdTurno;
 
         INSERT INTO AlertaEntregaWash (IdTurno, Patente)
@@ -228,4 +230,31 @@ INSERT INTO Usuario (Nombre, Apellido, Email, NombreUsuario,
     Contrasena, CodRol)
 VALUES ('Ramiro', 'Cordero', 'cordero14@gmail.com', 'ramiro',
     '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 1)
+GO
+
+-- =============================================
+-- 7. DATOS DE PRUEBA
+-- =============================================
+GO
+INSERT INTO Clientes (DNI, Nombre, Apellido, Telefono) VALUES
+('30111222', 'Juan', 'Perez', '1155551111'),
+('28999888', 'Maria', 'Gomez', '1166662222');
+
+-- OJO: TipoVehiculo tiene que ser exactamente 'Sedan' o 'SUV_Camioneta' (VehiculoMPP los reconoce por ese texto)
+INSERT INTO Vehiculos (Patente, TipoVehiculo, Marca, Color, DNI) VALUES
+('ABC123',  'Sedan',         'Toyota', 'Gris',  '30111222'),
+('AB123CD', 'SUV_Camioneta', 'Ford',   'Negro', '28999888');
+
+INSERT INTO ServicioLavado (Nombre, PrecioBase, EsCombo) VALUES
+('Lavado Exterior',          800, 0),   -- Id 1
+('Aspirado',                 400, 0),   -- Id 2
+('Limpieza de Tapizados',   1200, 0),   -- Id 3
+('Encerado de Carroceria',  1000, 0),   -- Id 4
+('Lavado Integral Premium', 2500, 1);   -- Id 5 (combo con precio promocional)
+
+INSERT INTO LavadoJerarquia (IdServicio, IdCombo) VALUES (1,5), (2,5), (3,5), (4,5);
+
+INSERT INTO Operarios (Nombre, PorcentajeComision) VALUES
+('Carlos Lopez', 15),
+('Lucia Fernandez', 12);
 GO

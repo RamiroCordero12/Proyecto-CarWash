@@ -28,5 +28,9 @@ namespace CarWash.BE
         {
             return true;
         }
+        public override decimal CalcularRecargo()
+        {
+            return RecargoChasis;
+        }
     }
 }
