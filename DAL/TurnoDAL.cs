@@ -70,7 +70,6 @@ namespace DAL
             return lista;
         }
 
-        // LavadoTerminado va por el SP (cambia el estado y genera la alerta de entrega)
         public void CambiarEstado(int idTurno, EstadoTurno nuevoEstado)
         {
             using (SqlConnection conn = conexion.ValidarConexion())

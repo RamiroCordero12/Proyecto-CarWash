@@ -96,5 +96,11 @@ namespace GUI
             FormOperador fo = new FormOperador();
             fo.ShowDialog();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            FormTurnos ft = new FormTurnos();
+            ft.ShowDialog();
+        }
     }
 }
