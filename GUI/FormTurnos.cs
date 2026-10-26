@@ -19,26 +19,39 @@ namespace GUI
         private VehiculoBLL vehiculoBll = new VehiculoBLL();
         private ServicioLavadoBLL servicioBll = new ServicioLavadoBLL();
         private OperadorBLL operadorBll = new OperadorBLL();
+        private Turno turnoSeleccionado = null;
 
         public FormTurnos()
         {
             InitializeComponent();
         }
 
-        private void CargarTurnos()
+        private void CargarTurnos(List<Turno> turnos = null)
         {
             dgvTurnos.DataSource = null;
-            dgvTurnos.DataSource = bll.Listar();
+            dgvTurnos.DataSource = turnos ?? bll.Listar();
 
             foreach (string col in new[] { "IdVehiculo", "IdServicio", "IdOperario", "IdUsuarioRegistro" })
             {
                 if (dgvTurnos.Columns[col] != null) dgvTurnos.Columns[col].Visible = false;
             }
+            if (dgvTurnos.Columns["IdTurno"] != null) dgvTurnos.Columns["IdTurno"].HeaderText = "ID";
             if (dgvTurnos.Columns["NombreServicio"] != null) dgvTurnos.Columns["NombreServicio"].HeaderText = "Servicio";
             if (dgvTurnos.Columns["NombreOperador"] != null) dgvTurnos.Columns["NombreOperador"].HeaderText = "Operario";
             if (dgvTurnos.Columns["FechaHora"] != null) dgvTurnos.Columns["FechaHora"].HeaderText = "Fecha y hora";
+            if (dgvTurnos.Columns["Precio"] != null) dgvTurnos.Columns["Precio"].DefaultCellStyle.Format = "C2";
+
             dgvTurnos.ClearSelection();
-        }        
+            turnoSeleccionado = null;
+            ActualizarBotonesSeleccion();
+        }
+
+        private void ActualizarBotonesSeleccion()
+        {
+            bool haySeleccion = turnoSeleccionado != null;
+            btnModificarTurno.Enabled = haySeleccion && turnoSeleccionado.Estado != EstadoTurno.Entregado && turnoSeleccionado.Estado != EstadoTurno.Cancelado;
+            btnEliminarTurno.Enabled = haySeleccion && turnoSeleccionado.Estado != EstadoTurno.Entregado && turnoSeleccionado.Estado != EstadoTurno.LavadoTerminado;
+        }
 
         private void ActualizarPrecio_Evento(object sender, EventArgs e)
         {
@@ -65,12 +78,69 @@ namespace GUI
                     cmbOperario.SelectedItem as Operador,
                     dtpFecha.Value);
 
+                MessageBox.Show("Turno registrado exitosamente.", "AquaWash", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 CargarTurnos();
                 LimpiarFormulario();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(ex.Message, "Error al registrar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnModificarTurno_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (turnoSeleccionado == null)
+                {
+                    MessageBox.Show("Selecciona un turno de la grilla para modificar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                bll.Modificar(
+                    turnoSeleccionado,
+                    cmbVehiculo.SelectedItem as Vehiculo,
+                    cmbServicio.SelectedItem as IComponenteServicio,
+                    cmbOperario.SelectedItem as Operador,
+                    dtpFecha.Value);
+
+                MessageBox.Show($"Turno ID {turnoSeleccionado.IdTurno} modificado exitosamente.", "AquaWash", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarTurnos();
+                LimpiarFormulario();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al modificar turno", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnEliminarTurno_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (turnoSeleccionado == null)
+                {
+                    MessageBox.Show("Selecciona un turno de la grilla para eliminar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var confirmacion = MessageBox.Show(
+                    $"¿Está seguro de que desea eliminar el turno ID {turnoSeleccionado.IdTurno} ({turnoSeleccionado.Patente})?\nEsta acción no se puede deshacer.",
+                    "Confirmar Eliminación",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (confirmacion != DialogResult.Yes) return;
+
+                bll.Eliminar(turnoSeleccionado);
+                MessageBox.Show("Turno eliminado exitosamente.", "AquaWash", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarTurnos();
+                LimpiarFormulario();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al eliminar turno", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -78,12 +148,19 @@ namespace GUI
         {
             try
             {
-                bll.AvanzarEstado(dgvTurnos.CurrentRow?.DataBoundItem as Turno);
+                var turno = dgvTurnos.CurrentRow?.DataBoundItem as Turno;
+                if (turno == null)
+                {
+                    MessageBox.Show("Seleccioná un turno de la grilla primero.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                bll.AvanzarEstado(turno);
                 CargarTurnos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(ex.Message, "Error al avanzar estado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -92,7 +169,7 @@ namespace GUI
             Turno turno = dgvTurnos.CurrentRow?.DataBoundItem as Turno;
             if (turno == null)
             {
-                MessageBox.Show("Seleccioná un turno de la grilla primero.");
+                MessageBox.Show("Seleccioná un turno de la grilla primero.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -105,32 +182,104 @@ namespace GUI
             {
                 bll.Cancelar(turno);
                 CargarTurnos();
+                LimpiarFormulario();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        private void btnFiltrar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string estado = cmbFiltroEstado.Text;
+                string patente = txtFiltroPatente.Text.Trim();
+
+                var resultados = bll.Filtrar(estado, patente);
+                CargarTurnos(resultados);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al filtrar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnLimpiarFiltro_Click(object sender, EventArgs e)
+        {
+            cmbFiltroEstado.SelectedIndex = 0;
+            txtFiltroPatente.Clear();
+            CargarTurnos();
+        }
+
+        private void btnLimpiarCampos_Click(object sender, EventArgs e)
+        {
+            LimpiarFormulario();
+        }
+
         private void LimpiarFormulario()
         {
+            turnoSeleccionado = null;
             ucSelectorCliente2.Limpiar();
             cmbVehiculo.DataSource = null;
             cmbServicio.SelectedIndex = -1;
             cmbOperario.SelectedIndex = -1;
             dtpFecha.Value = DateTime.Now;
             ActualizarPrecio();
+            ActualizarBotonesSeleccion();
+            dgvTurnos.ClearSelection();
+        }
+
+        private void dgvTurnos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= dgvTurnos.Rows.Count) return;
+
+            turnoSeleccionado = dgvTurnos.Rows[e.RowIndex].DataBoundItem as Turno;
+            if (turnoSeleccionado == null) return;
+
+            try
+            {
+                dtpFecha.Value = turnoSeleccionado.FechaHora;
+
+                // Seleccionar servicio
+                for (int i = 0; i < cmbServicio.Items.Count; i++)
+                {
+                    if (cmbServicio.Items[i] is IComponenteServicio serv && ObtenerNombreServicio(serv) == turnoSeleccionado.NombreServicio)
+                    {
+                        cmbServicio.SelectedIndex = i;
+                        break;
+                    }
+                }
+
+                // Seleccionar operario
+                for (int i = 0; i < cmbOperario.Items.Count; i++)
+                {
+                    if (cmbOperario.Items[i] is Operador op && op.Nombre == turnoSeleccionado.NombreOperador)
+                    {
+                        cmbOperario.SelectedIndex = i;
+                        break;
+                    }
+                }
+
+                ActualizarPrecio();
+            }
+            catch { }
+
+            ActualizarBotonesSeleccion();
         }
 
         private void ucSelectorCliente2_Load(object sender, EventArgs e)
         {
-
         }
 
         private void ucSelectorCliente2_ClienteSeleccionadoChanged(object sender, EventArgs e)
-        {           
-                try
+        {
+            try
+            {
+                Cliente cliente = ucSelectorCliente2.ClienteSeleccionado;
+                if (cliente != null)
                 {
-                    Cliente cliente = ucSelectorCliente2.ClienteSeleccionado;
                     cmbVehiculo.DataSource = null;
                     cmbVehiculo.DataSource = vehiculoBll.ListarPorCliente(cliente.DNI);
 
@@ -138,10 +287,11 @@ namespace GUI
                         MessageBox.Show("Este cliente no tiene vehículos registrados.", "Aviso",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }           
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void FormTurnos_Load_1(object sender, EventArgs e)
@@ -152,6 +302,7 @@ namespace GUI
                 cmbOperario.DataSource = operadorBll.Listar();
                 cmbServicio.SelectedIndex = -1;
                 cmbOperario.SelectedIndex = -1;
+                cmbFiltroEstado.SelectedIndex = 0;
                 dtpFecha.Value = DateTime.Now;
                 CargarTurnos();
                 ActualizarPrecio();
@@ -162,9 +313,6 @@ namespace GUI
             }
         }
 
-        /// <summary>
-        /// Builds the header cell style for the DataGridView.
-        /// </summary>
         private static DataGridViewCellStyle BuildHeaderStyle()
         {
             DataGridViewCellStyle style = new DataGridViewCellStyle();
@@ -176,9 +324,6 @@ namespace GUI
             return style;
         }
 
-        /// <summary>
-        /// Builds the default cell style for the DataGridView.
-        /// </summary>
         private static DataGridViewCellStyle BuildCellStyle()
         {
             DataGridViewCellStyle style = new DataGridViewCellStyle();
@@ -191,9 +336,6 @@ namespace GUI
             return style;
         }
 
-        /// <summary>
-        /// Draws a subtle rounded border and shadow around the form panel.
-        /// </summary>
         private void panelDatosTurno_Paint(object sender, PaintEventArgs e)
         {
             Panel panel = (Panel)sender;
@@ -210,9 +352,13 @@ namespace GUI
             }
         }
 
-        /// <summary>
-        /// Helper to build a rounded rectangle path.
-        /// </summary>
+        private static string ObtenerNombreServicio(IComponenteServicio servicio)
+        {
+            if (servicio is PaqueteServicio p) return p.Nombre;
+            if (servicio is ServiIndividual s) return s.Nombre;
+            return servicio?.ObtenerDescripcion();
+        }
+
         private GraphicsPath RoundedRect(Rectangle bounds, int radius)
         {
             int diameter = radius * 2;

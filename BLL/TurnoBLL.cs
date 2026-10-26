@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,6 +49,14 @@ namespace BLL
             }
         }
 
+        public List<Turno> Filtrar(string estado = null, string patente = null, DateTime? fecha = null)
+        {
+            using (TurnoDAL dal = new TurnoDAL())
+            {
+                return dal.Filtrar(estado, patente, fecha);
+            }
+        }
+
         // Precio = servicio/combo + recargo del vehículo (SUV +150)
         public decimal CalcularPrecio(Vehiculo vehiculo, IComponenteServicio servicio)
         {
@@ -91,6 +99,59 @@ namespace BLL
                 accion: $"Alta de turno - Patente: {vehiculo.Patente}, Operario: {operador.Nombre}, Precio: {turno.Precio:N2}",
                 modulo: "Turnos",
                 criticidad: Criticidad.Media);
+        }
+
+        public void Modificar(Turno turno, Vehiculo vehiculo, IComponenteServicio servicio, Operador operador, DateTime fechaHora)
+        {
+            if (turno == null)
+                throw new Exception("Debes seleccionar un turno para modificar.");
+            if (turno.Estado == EstadoTurno.Entregado || turno.Estado == EstadoTurno.Cancelado)
+                throw new Exception("No se puede modificar un turno que ya ha sido entregado o cancelado.");
+            if (vehiculo == null)
+                throw new Exception("Debes seleccionar un vehículo.");
+            if (servicio == null)
+                throw new Exception("Debes seleccionar un servicio o combo.");
+            if (operador == null)
+                throw new Exception("Debes seleccionar un operario.");
+
+            turno.IdVehiculo = vehiculo.IdVehiculo;
+            turno.IdServicio = ObtenerIdServicio(servicio);
+            turno.IdOperario = operador.IDOperador;
+            turno.FechaHora = fechaHora;
+            turno.Precio = CalcularPrecio(vehiculo, servicio);
+            turno.Patente = vehiculo.Patente;
+            turno.NombreServicio = ObtenerNombreServicio(servicio);
+            turno.NombreOperador = operador.Nombre;
+
+            using (TurnoDAL dal = new TurnoDAL())
+            {
+                dal.Modificar(turno);
+            }
+
+            bitacoraBLL.Registrar(
+                idUsuario: SesionActual.Instancia.UsuarioLogueado?.IdUsuario,
+                accion: $"Modificación de turno {turno.IdTurno} - Patente: {vehiculo.Patente}, Operario: {operador.Nombre}, Nuevo Precio: {turno.Precio:N2}",
+                modulo: "Turnos",
+                criticidad: Criticidad.Alta);
+        }
+
+        public void Eliminar(Turno turno)
+        {
+            if (turno == null)
+                throw new Exception("Debes seleccionar un turno para eliminar.");
+            if (turno.Estado == EstadoTurno.Entregado || turno.Estado == EstadoTurno.LavadoTerminado)
+                throw new Exception("No se puede eliminar un turno con lavado terminado o entregado por motivos de auditoría.");
+
+            using (TurnoDAL dal = new TurnoDAL())
+            {
+                dal.Eliminar(turno.IdTurno);
+            }
+
+            bitacoraBLL.Registrar(
+                idUsuario: SesionActual.Instancia.UsuarioLogueado?.IdUsuario,
+                accion: $"Eliminación de turno {turno.IdTurno} (Patente: {turno.Patente})",
+                modulo: "Turnos",
+                criticidad: Criticidad.Alta);
         }
 
         // Pendiente -> Asignado -> EnLavado -> LavadoTerminado -> Entregado
@@ -151,6 +212,13 @@ namespace BLL
             if (servicio is PaqueteServicio paquete) return paquete.IdPaquete;
             if (servicio is ServiIndividual individual) return individual.IdServicio;
             throw new Exception("Tipo de servicio no reconocido");
+        }
+
+        private string ObtenerNombreServicio(IComponenteServicio servicio)
+        {
+            if (servicio is PaqueteServicio paquete) return paquete.Nombre;
+            if (servicio is ServiIndividual individual) return individual.Nombre;
+            return servicio.ObtenerDescripcion();
         }
     }
 }

@@ -1,4 +1,6 @@
 using BLL;
+using BLL.Idioma;
+using CarWash.BE;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +13,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form, IIdiomaObserver
     {
         public Form1()
         {
@@ -20,8 +22,54 @@ namespace GUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Suscripción al Observer de Idioma (CU03)
+            IdiomaManager.Instancia.Suscribir(this);
+
+            if (cmbIdioma.Items.Count > 0)
+                cmbIdioma.SelectedIndex = IdiomaManager.Instancia.IdiomaActual == "EN" ? 1 : 0;
+
+            ActualizarIdioma();
             AplicarPermisos();
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Desuscripción Observer de Idioma
+            IdiomaManager.Instancia.Desuscribir(this);
+        }
+
+        #region CU03: Observer de Cambio de Idioma
+
+        private void cmbIdioma_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbIdioma.SelectedIndex == 1)
+                IdiomaManager.Instancia.CambiarIdioma("EN");
+            else
+                IdiomaManager.Instancia.CambiarIdioma("ES");
+        }
+
+        public void ActualizarIdioma()
+        {
+            var manager = IdiomaManager.Instancia;
+
+            btnMenuClientes.Text = manager.Traducir("MenuClientes");
+            btnMenuVehiculos.Text = manager.Traducir("MenuVehiculos");
+            btnMenuServicios.Text = manager.Traducir("MenuServicios");
+            btnMenuConsultas.Text = manager.Traducir("MenuConsultas");
+            btnMenuBitacora.Text = manager.Traducir("MenuBitacora");
+            button1.Text = manager.Traducir("MenuOperarios");
+            button2.Text = manager.Traducir("MenuTurnos");
+            btnTableroEntregas.Text = manager.Traducir("MenuTablero");
+            btnEstadisticas.Text = manager.Traducir("MenuEstadisticas");
+            btnUsuarios.Text = manager.Traducir("MenuUsuarios");
+            btnRoles.Text = manager.Traducir("MenuRoles");
+            btnBackup.Text = manager.Traducir("MenuBackup");
+            btnLogout.Text = manager.Traducir("MenuLogout");
+            lblVersion.Text = manager.Traducir("PanelControl");
+            lblIdiomaTag.Text = manager.Traducir("Idioma");
+        }
+
+        #endregion
 
         public void AplicarPermisos()
         {
@@ -76,9 +124,10 @@ namespace GUI
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
+            var manager = IdiomaManager.Instancia;
             var confirmar = MessageBox.Show(
-                "¿Seguro que querés cerrar sesión?",
-                "Cerrar sesión",
+                manager.Traducir("ConfirmarCerrarSesion", "¿Seguro que querés cerrar sesión?"),
+                manager.Traducir("TituloCerrarSesion", "Cerrar sesión"),
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
@@ -177,7 +226,6 @@ namespace GUI
         {
             FormGestionRoles fr = new FormGestionRoles();
             fr.ShowDialog();
-            // Si el rol activo del usuario actual fue modificado, re-aplicar permisos
             AplicarPermisos();
         }
 

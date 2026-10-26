@@ -45,7 +45,8 @@
     <Compile Include="EstadisticaBLL.cs" />
     <Compile Include="Bitacora\RegistroBitacoraBLL.cs" />
     <Compile Include="ClienteBLL.cs" />
-        <Compile Include="BackupBLL.cs" />
+            <Compile Include="BackupBLL.cs" />
+    <Compile Include="Idioma\IdiomaManager.cs" />
     <Compile Include="LoginBLL.cs" />
     <Compile Include="UsuarioBLL.cs" />
     <Compile Include="OperadorBLL.cs" />

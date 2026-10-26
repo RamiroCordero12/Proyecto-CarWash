@@ -41,7 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alertaentrega.cs" />
+        <Compile Include="Alertaentrega.cs" />
+    <Compile Include="IIdiomaObserver.cs" />
     <Compile Include="EstadisticaFacturacionDiaria.cs" />
     <Compile Include="EstadisticaServicioMes.cs" />
     <Compile Include="Bitacora\Criticidad.cs" />

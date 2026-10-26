@@ -28,6 +28,9 @@ namespace GUI
             this.btnMenuServicios = new System.Windows.Forms.Button();
             this.btnMenuVehiculos = new System.Windows.Forms.Button();
             this.btnMenuClientes = new System.Windows.Forms.Button();
+            this.panelIdioma = new System.Windows.Forms.Panel();
+            this.lblIdiomaTag = new System.Windows.Forms.Label();
+            this.cmbIdioma = new System.Windows.Forms.ComboBox();
             this.panelUserBadge = new System.Windows.Forms.Panel();
             this.lblUsuarioSesion = new System.Windows.Forms.Label();
             this.btnLogout = new System.Windows.Forms.Button();
@@ -36,6 +39,7 @@ namespace GUI
             this.lblVersion = new System.Windows.Forms.Label();
             this.lblLogo = new System.Windows.Forms.Label();
             this.panelSidebar.SuspendLayout();
+            this.panelIdioma.SuspendLayout();
             this.panelUserBadge.SuspendLayout();
             this.panelLogo.SuspendLayout();
             this.SuspendLayout();
@@ -57,6 +61,7 @@ namespace GUI
             this.panelSidebar.Controls.Add(this.btnMenuServicios);
             this.panelSidebar.Controls.Add(this.btnMenuVehiculos);
             this.panelSidebar.Controls.Add(this.btnMenuClientes);
+            this.panelSidebar.Controls.Add(this.panelIdioma);
             this.panelSidebar.Controls.Add(this.panelUserBadge);
             this.panelSidebar.Controls.Add(this.btnLogout);
             this.panelSidebar.Controls.Add(this.panelSeparator);
@@ -297,6 +302,46 @@ namespace GUI
             this.btnMenuClientes.Click += new System.EventHandler(this.gestorDeClientesToolStripMenuItem_Click);
 
             // 
+            // panelIdioma
+            // 
+            this.panelIdioma.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(31)))), ((int)(((byte)(60)))));
+            this.panelIdioma.Controls.Add(this.cmbIdioma);
+            this.panelIdioma.Controls.Add(this.lblIdiomaTag);
+            this.panelIdioma.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelIdioma.Location = new System.Drawing.Point(0, 545);
+            this.panelIdioma.Name = "panelIdioma";
+            this.panelIdioma.Padding = new System.Windows.Forms.Padding(10, 5, 10, 5);
+            this.panelIdioma.Size = new System.Drawing.Size(235, 35);
+            this.panelIdioma.TabIndex = 16;
+
+            // 
+            // lblIdiomaTag
+            // 
+            this.lblIdiomaTag.AutoSize = true;
+            this.lblIdiomaTag.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblIdiomaTag.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(190)))), ((int)(((byte)(197)))));
+            this.lblIdiomaTag.Location = new System.Drawing.Point(10, 8);
+            this.lblIdiomaTag.Name = "lblIdiomaTag";
+            this.lblIdiomaTag.Size = new System.Drawing.Size(58, 15);
+            this.lblIdiomaTag.TabIndex = 0;
+            this.lblIdiomaTag.Text = "🌐 Idioma:";
+
+            // 
+            // cmbIdioma
+            // 
+            this.cmbIdioma.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbIdioma.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbIdioma.FormattingEnabled = true;
+            this.cmbIdioma.Items.AddRange(new object[] {
+            "Español",
+            "English"});
+            this.cmbIdioma.Location = new System.Drawing.Point(85, 5);
+            this.cmbIdioma.Name = "cmbIdioma";
+            this.cmbIdioma.Size = new System.Drawing.Size(140, 23);
+            this.cmbIdioma.TabIndex = 1;
+            this.cmbIdioma.SelectedIndexChanged += new System.EventHandler(this.cmbIdioma_SelectedIndexChanged);
+
+            // 
             // panelUserBadge
             // 
             this.panelUserBadge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(22)))), ((int)(((byte)(40)))));
@@ -397,8 +442,11 @@ namespace GUI
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "🚿 AquaWash Pro — Panel Principal";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panelSidebar.ResumeLayout(false);
+            this.panelIdioma.ResumeLayout(false);
+            this.panelIdioma.PerformLayout();
             this.panelUserBadge.ResumeLayout(false);
             this.panelLogo.ResumeLayout(false);
             this.panelLogo.PerformLayout();
@@ -423,6 +471,9 @@ namespace GUI
         private System.Windows.Forms.Button btnUsuarios;
         private System.Windows.Forms.Button btnRoles;
         private System.Windows.Forms.Button btnBackup;
+        private System.Windows.Forms.Panel panelIdioma;
+        private System.Windows.Forms.Label lblIdiomaTag;
+        private System.Windows.Forms.ComboBox cmbIdioma;
         private System.Windows.Forms.Panel panelUserBadge;
         private System.Windows.Forms.Label lblUsuarioSesion;
     }
