@@ -14,6 +14,33 @@ namespace BLL
     {
         private RegistroBitacoraBLL bitacoraBLL = new RegistroBitacoraBLL();
 
+        // ===== OBSERVER =====
+        // Sujeto: Turno (evento EstadoChanged).
+        // Este evento estático es el "canal" al que se suscriben los observadores
+        // (por ejemplo FormTableroEntregas) sin acoplarse a FormTurnos.
+        // Se dispara DESPUÉS de que el cambio se guardó en la base.
+        public static event EventHandler<TurnoEventArgs> EstadoTurnoCambiado;
+
+        private static void RetransmitirCambio(object sender, TurnoEventArgs e)
+        {
+            EstadoTurnoCambiado?.Invoke(sender, e);
+        }
+
+        // Cambia el estado en memoria y deja que el Turno avise por su evento.
+        private static void AplicarEstadoYNotificar(Turno turno, EstadoTurno nuevoEstado)
+        {
+            turno.EstadoChanged += RetransmitirCambio;
+            try
+            {
+                turno.Estado = nuevoEstado;
+            }
+            finally
+            {
+                turno.EstadoChanged -= RetransmitirCambio;
+            }
+        }
+        // ====================
+
         public List<Turno> Listar()
         {
             using (TurnoDAL dal = new TurnoDAL())
@@ -93,6 +120,9 @@ namespace BLL
                 accion: $"Turno {turno.IdTurno} ({turno.Patente}): {turno.Estado} -> {siguiente}",
                 modulo: "Turnos",
                 criticidad: Criticidad.Baja);
+
+            // Recién acá (ya guardado en BD) se notifica a los observadores
+            AplicarEstadoYNotificar(turno, siguiente);
         }
 
         public void Cancelar(Turno turno)
@@ -112,6 +142,8 @@ namespace BLL
                 accion: $"Cancelación de turno {turno.IdTurno} ({turno.Patente})",
                 modulo: "Turnos",
                 criticidad: Criticidad.Media);
+
+            AplicarEstadoYNotificar(turno, EstadoTurno.Cancelado);
         }
 
         private int ObtenerIdServicio(IComponenteServicio servicio)

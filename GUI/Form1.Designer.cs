@@ -16,6 +16,7 @@ namespace GUI
         private void InitializeComponent()
         {
             this.panelSidebar = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.btnMenuBitacora = new System.Windows.Forms.Button();
             this.btnMenuConsultas = new System.Windows.Forms.Button();
@@ -27,7 +28,7 @@ namespace GUI
             this.panelLogo = new System.Windows.Forms.Panel();
             this.lblVersion = new System.Windows.Forms.Label();
             this.lblLogo = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnTableroEntregas = new System.Windows.Forms.Button();
             this.panelSidebar.SuspendLayout();
             this.panelLogo.SuspendLayout();
             this.SuspendLayout();
@@ -35,6 +36,7 @@ namespace GUI
             // panelSidebar
             // 
             this.panelSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(31)))), ((int)(((byte)(60)))));
+            this.panelSidebar.Controls.Add(this.btnTableroEntregas);
             this.panelSidebar.Controls.Add(this.button2);
             this.panelSidebar.Controls.Add(this.button1);
             this.panelSidebar.Controls.Add(this.btnMenuBitacora);
@@ -51,6 +53,24 @@ namespace GUI
             this.panelSidebar.Size = new System.Drawing.Size(220, 650);
             this.panelSidebar.TabIndex = 0;
             this.panelSidebar.Paint += new System.Windows.Forms.PaintEventHandler(this.panelSidebar_Paint);
+            // 
+            // button2
+            // 
+            this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(190)))), ((int)(((byte)(197)))));
+            this.button2.Location = new System.Drawing.Point(0, 352);
+            this.button2.Name = "button2";
+            this.button2.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.button2.Size = new System.Drawing.Size(220, 45);
+            this.button2.TabIndex = 9;
+            this.button2.Text = "Turnos";
+            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
@@ -219,23 +239,23 @@ namespace GUI
             this.lblLogo.TabIndex = 0;
             this.lblLogo.Text = "💧 AQUA WASH";
             // 
-            // button2
+            // btnTableroEntregas
             // 
-            this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(190)))), ((int)(((byte)(197)))));
-            this.button2.Location = new System.Drawing.Point(0, 352);
-            this.button2.Name = "button2";
-            this.button2.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.button2.Size = new System.Drawing.Size(220, 45);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "Turnos";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnTableroEntregas.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTableroEntregas.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnTableroEntregas.FlatAppearance.BorderSize = 0;
+            this.btnTableroEntregas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTableroEntregas.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnTableroEntregas.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(190)))), ((int)(((byte)(197)))));
+            this.btnTableroEntregas.Location = new System.Drawing.Point(0, 397);
+            this.btnTableroEntregas.Name = "btnTableroEntregas";
+            this.btnTableroEntregas.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnTableroEntregas.Size = new System.Drawing.Size(220, 45);
+            this.btnTableroEntregas.TabIndex = 10;
+            this.btnTableroEntregas.Text = "  🚗  Tablero de Entregas";
+            this.btnTableroEntregas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTableroEntregas.UseVisualStyleBackColor = false;
+            this.btnTableroEntregas.Click += new System.EventHandler(this.btnTableroEntregas_Click);
             // 
             // Form1
             // 
@@ -269,5 +289,6 @@ namespace GUI
         private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnTableroEntregas;
     }
 }

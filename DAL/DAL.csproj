@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alertaentregadal.cs" />
     <Compile Include="Bitacora\RegistroBitacoraDAL.cs" />
     <Compile Include="ClienteDAL.cs" />
     <Compile Include="ConexionBD.cs" />

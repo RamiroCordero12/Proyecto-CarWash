@@ -56,6 +56,12 @@ namespace GUI
                 hijo.Close();
             }
 
+            if (tableroEntregasAbierto != null && !tableroEntregasAbierto.IsDisposed)
+            {
+                tableroEntregasAbierto.Close();
+                tableroEntregasAbierto = null;
+            }
+
             var bll = new LoginBLL();
             bll.CerrarSesion();
 
@@ -101,6 +107,24 @@ namespace GUI
         {
             FormTurnos ft = new FormTurnos();
             ft.ShowDialog();
+        }
+
+        private FormTableroEntregas tableroEntregasAbierto = null;
+
+        private void btnTableroEntregas_Click(object sender, EventArgs e)
+        {
+            if (tableroEntregasAbierto == null || tableroEntregasAbierto.IsDisposed)
+            {
+                tableroEntregasAbierto = new FormTableroEntregas();
+                tableroEntregasAbierto.Show();
+            }
+            else
+            {
+                if (tableroEntregasAbierto.WindowState == FormWindowState.Minimized)
+                    tableroEntregasAbierto.WindowState = FormWindowState.Normal;
+                tableroEntregasAbierto.BringToFront();
+                tableroEntregasAbierto.Focus();
+            }
         }
     }
 }
