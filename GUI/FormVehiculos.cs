@@ -35,14 +35,29 @@ namespace GUI
 
         private void CargarVehiculos()
         {
+            var lista = bll.Listar();
             dgvVehiculos.DataSource = null;
-            dgvVehiculos.DataSource = bll.Listar();
+            dgvVehiculos.DataSource = lista;
+            lblTotalVehiculos.Text = $"Total: {lista.Count}";
+            dgvVehiculos.ClearSelection();
+        }
+
+        private void dgvVehiculos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            CargarVehiculoSeleccionado();
         }
 
         private void dgvVehiculos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            CargarVehiculoSeleccionado();
+        }
+
+        private void CargarVehiculoSeleccionado()
+        {
             if (dgvVehiculos.CurrentRow == null) return;
-            Vehiculo v = (Vehiculo)dgvVehiculos.CurrentRow.DataBoundItem;
+            Vehiculo v = dgvVehiculos.CurrentRow.DataBoundItem as Vehiculo;
+            if (v == null) return;
+
             idVehiculoSeleccionado = v.IdVehiculo;
             txtDni.Text = v.DNI.ToString();
             txtPatente.Text = v.Patente;
@@ -75,7 +90,7 @@ namespace GUI
         {
             if (idVehiculoSeleccionado <= 0)
             {
-                MessageBox.Show("Seleccioná un vehículo de la grilla primero.");
+                MessageBox.Show("Seleccioná un vehículo de la grilla primero.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             try
@@ -94,7 +109,7 @@ namespace GUI
         {
             if (idVehiculoSeleccionado <= 0)
             {
-                MessageBox.Show("Seleccioná un vehículo de la grilla primero.");
+                MessageBox.Show("Seleccioná un vehículo de la grilla primero.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             try
@@ -115,6 +130,11 @@ namespace GUI
             }
         }
 
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarCampos();
+        }
+
         private void LimpiarCampos()
         {
             idVehiculoSeleccionado = 0;
@@ -124,10 +144,62 @@ namespace GUI
             txtColor.Clear();
             cmbModelo.Enabled = true;
             cmbModelo.SelectedIndex = 0;
+            dgvVehiculos.ClearSelection();
         }
 
-        private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+        // ==================== CU07: FILTRAR VEHÍCULOS POR CLIENTE ====================
+        private void btnBuscarVehiculo_Click(object sender, EventArgs e)
+        {
+            EjecutarFiltroPorDni();
+        }
 
+        private void btnLimpiarFiltro_Click(object sender, EventArgs e)
+        {
+            txtFiltroDni.Clear();
+            CargarVehiculos();
+        }
+
+        private void txtFiltroDni_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                EjecutarFiltroPorDni();
+            }
+        }
+
+        private void EjecutarFiltroPorDni()
+        {
+            string dni = txtFiltroDni.Text.Trim();
+            if (string.IsNullOrWhiteSpace(dni))
+            {
+                CargarVehiculos();
+                return;
+            }
+
+            try
+            {
+                var filtrados = bll.ListarPorCliente(dni);
+                dgvVehiculos.DataSource = null;
+                dgvVehiculos.DataSource = filtrados;
+                lblTotalVehiculos.Text = $"{filtrados.Count} veh.";
+
+                if (filtrados.Count == 0)
+                {
+                    MessageBox.Show(
+                        $"No se encontraron vehículos registrados para el cliente con DNI {dni}.",
+                        "Sin resultados",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al filtrar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        // ==================== GRILLA DE CLIENTES AUXILIAR ====================
         private void CargarClientes()
         {
             dgvClientes.DataSource = null;
@@ -137,8 +209,46 @@ namespace GUI
         private void dgvClientes_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dgvClientes.CurrentRow == null) return;
-            Cliente c = (Cliente)dgvClientes.CurrentRow.DataBoundItem;
-            txtDni.Text = c.DNI;
+            Cliente cli = dgvClientes.CurrentRow.DataBoundItem as Cliente;
+            if (cli != null)
+            {
+                txtDni.Text = cli.DNI;
+                txtFiltroDni.Text = cli.DNI; // Sincroniza el DNI para permitir filtrar vehículos con 1 click
+            }
+        }
+
+        private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dgvClientes_CellClick(sender, e);
+        }
+
+        // ==================== ESTILOS VISUALES ROUNDED CARDS ====================
+        private void panelForm_Paint(object sender, PaintEventArgs e)
+        {
+            Panel panel = (Panel)sender;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            using (Pen pen = new Pen(Color.FromArgb(210, 215, 220), 1))
+            {
+                Rectangle rect = new Rectangle(0, 0, panel.Width - 1, panel.Height - 1);
+                int radius = 8;
+                using (GraphicsPath path = RoundedRect(rect, radius))
+                {
+                    e.Graphics.DrawPath(pen, path);
+                }
+            }
+        }
+
+        private static GraphicsPath RoundedRect(Rectangle bounds, int radius)
+        {
+            int diameter = radius * 2;
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(bounds.X, bounds.Y, diameter, diameter, 180, 90);
+            path.AddArc(bounds.Right - diameter, bounds.Y, diameter, diameter, 270, 90);
+            path.AddArc(bounds.Right - diameter, bounds.Bottom - diameter, diameter, diameter, 0, 90);
+            path.AddArc(bounds.X, bounds.Bottom - diameter, diameter, diameter, 90, 90);
+            path.CloseFigure();
+            return path;
         }
     }
 }

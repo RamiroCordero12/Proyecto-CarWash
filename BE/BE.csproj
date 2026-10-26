@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alertaentrega.cs" />
+    <Compile Include="EstadisticaFacturacionDiaria.cs" />
+    <Compile Include="EstadisticaServicioMes.cs" />
     <Compile Include="Bitacora\Criticidad.cs" />
     <Compile Include="Bitacora\RegistroBitacoraBE.cs" />
     <Compile Include="Cliente.cs" />

@@ -258,3 +258,59 @@ INSERT INTO Operarios (Nombre, PorcentajeComision) VALUES
 ('Carlos Lopez', 15),
 ('Lucia Fernandez', 12);
 GO
+
+
+-- =============================================
+-- 8. COMPOSITE DE SEGURIDAD (HOJAS, FAMILIAS Y ROLES)
+-- =============================================
+INSERT INTO Hojas (NombreHoja, DescHoja) VALUES
+('Clientes', 'Gestión y consulta de clientes'),
+('Vehiculos', 'Gestión y consulta de vehículos'),
+('Servicios', 'Gestión de servicios de lavado y combos'),
+('Turnos', 'Gestión y registro de turnos de lavado'),
+('TableroEntregas', 'Tablero de entregas y aviso de lavados finalizados'),
+('Operarios', 'Gestión de operarios y comisiones'),
+('Bitacora', 'Consulta y filtrado de auditoría'),
+('Estadisticas', 'Gráficos de facturación y servicios del mes'),
+('Seguridad', 'Gestión de roles, permisos y usuarios'),
+('Backup', 'Copia de seguridad y restauración de base de datos');
+GO
+
+INSERT INTO Familia (NombreFamilia, DescFamilia) VALUES
+('Operaciones', 'Operaciones diarias de lavado y turnos'),
+('Administracion', 'Control administrativo completo del lavadero');
+GO
+
+-- Asignar hojas a Familia Operaciones
+INSERT INTO Pat_Fam (CodFam, CodHoja)
+SELECT (SELECT CodFam FROM Familia WHERE NombreFamilia = 'Operaciones'), CodHoja 
+FROM Hojas WHERE NombreHoja IN ('Clientes', 'Vehiculos', 'Servicios', 'Turnos', 'TableroEntregas');
+GO
+
+-- Asignar Operaciones a Administracion (Fam_Fam)
+INSERT INTO Fam_Fam (CodFamPadre, CodFamHijo)
+VALUES ((SELECT CodFam FROM Familia WHERE NombreFamilia = 'Administracion'),
+        (SELECT CodFam FROM Familia WHERE NombreFamilia = 'Operaciones'));
+GO
+
+-- Asignar hojas administrativas a Administracion
+INSERT INTO Pat_Fam (CodFam, CodHoja)
+SELECT (SELECT CodFam FROM Familia WHERE NombreFamilia = 'Administracion'), CodHoja
+FROM Hojas WHERE NombreHoja IN ('Operarios', 'Bitacora', 'Estadisticas', 'Seguridad', 'Backup');
+GO
+
+-- Rol Operador
+INSERT INTO Roles (NombreRol, DescRol) VALUES ('Operador', 'Operador de pista con acceso a turnos y clientes');
+GO
+
+-- Asignar Administracion al Rol AdminBasico
+INSERT INTO Rol_Fam (CodRol, CodFam)
+VALUES ((SELECT CodRol FROM Roles WHERE NombreRol = 'AdminBasico'),
+        (SELECT CodFam FROM Familia WHERE NombreFamilia = 'Administracion'));
+GO
+
+-- Asignar Operaciones al Rol Operador
+INSERT INTO Rol_Fam (CodRol, CodFam)
+VALUES ((SELECT CodRol FROM Roles WHERE NombreRol = 'Operador'),
+        (SELECT CodFam FROM Familia WHERE NombreFamilia = 'Operaciones'));
+GO

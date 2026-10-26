@@ -18,6 +18,44 @@ namespace GUI
             InitializeComponent();
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            AplicarPermisos();
+        }
+
+        public void AplicarPermisos()
+        {
+            var sesion = SesionActual.Instancia;
+            var usuario = sesion?.UsuarioLogueado;
+            var rol = sesion?.RolActivo;
+
+            if (usuario == null || rol == null)
+            {
+                lblUsuarioSesion.Text = "👤 Invitado\n🔑 Sin Rol";
+                return;
+            }
+
+            lblUsuarioSesion.Text = $"👤 {usuario.NombreUsuario} ({usuario.NombreCompleto})\n🔑 Rol: {rol.NombreRol}";
+
+            // Determinar si es un Administrador
+            bool esAdmin = rol.NombreRol.IndexOf("Admin", StringComparison.OrdinalIgnoreCase) >= 0;
+
+            // CU13, CU14, CU15, CU16: Seguridad y administración restringida por rol/permisos
+            bool tienePermisoOperarios = esAdmin || sesion.TienePermiso(6);    // Hoja: Operarios
+            bool tienePermisoBitacora = esAdmin || sesion.TienePermiso(7);     // Hoja: Bitacora
+            bool tienePermisoEstadisticas = esAdmin || sesion.TienePermiso(8); // Hoja: Estadisticas
+            bool tienePermisoSeguridad = esAdmin || sesion.TienePermiso(9);    // Hoja: Seguridad (Usuarios + Roles)
+            bool tienePermisoBackup = esAdmin || sesion.TienePermiso(10);      // Hoja: Backup
+
+            // Módulos administrativos: visibilidad según permisos
+            button1.Visible = tienePermisoOperarios;           // Operarios
+            btnMenuBitacora.Visible = tienePermisoBitacora;     // Bitácora
+            btnEstadisticas.Visible = tienePermisoEstadisticas; // Estadísticas
+            btnUsuarios.Visible = tienePermisoSeguridad;       // Usuarios (CU16)
+            btnRoles.Visible = tienePermisoSeguridad;          // Roles y Permisos (CU13, CU14, CU15)
+            btnBackup.Visible = tienePermisoBackup;            // Backup y Restore (CU17, CU18)
+        }
+
         private void gestorDeClientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormClientes c = new FormClientes();
@@ -30,10 +68,6 @@ namespace GUI
             f.ShowDialog();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-        }
-
         private void formBitacoraToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormBitacora b = new FormBitacora();
@@ -43,10 +77,10 @@ namespace GUI
         private void btnLogout_Click(object sender, EventArgs e)
         {
             var confirmar = MessageBox.Show(
-            "¿Seguro que querés cerrar sesión?",
-            "Cerrar sesión",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Question);
+                "¿Seguro que querés cerrar sesión?",
+                "Cerrar sesión",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
             if (confirmar != DialogResult.Yes)
                 return;
@@ -71,6 +105,7 @@ namespace GUI
             {
                 if (login.ShowDialog() == DialogResult.OK)
                 {
+                    AplicarPermisos();
                     this.Show();
                 }
                 else
@@ -94,7 +129,6 @@ namespace GUI
 
         private void panelSidebar_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -125,6 +159,32 @@ namespace GUI
                 tableroEntregasAbierto.BringToFront();
                 tableroEntregasAbierto.Focus();
             }
+        }
+
+        private void btnEstadisticas_Click(object sender, EventArgs e)
+        {
+            FormEstadisticas fe = new FormEstadisticas();
+            fe.ShowDialog();
+        }
+
+        private void btnUsuarios_Click(object sender, EventArgs e)
+        {
+            FormGestionUsuarios fu = new FormGestionUsuarios();
+            fu.ShowDialog();
+        }
+
+        private void btnRoles_Click(object sender, EventArgs e)
+        {
+            FormGestionRoles fr = new FormGestionRoles();
+            fr.ShowDialog();
+            // Si el rol activo del usuario actual fue modificado, re-aplicar permisos
+            AplicarPermisos();
+        }
+
+        private void btnBackup_Click(object sender, EventArgs e)
+        {
+            FormBackup fb = new FormBackup();
+            fb.ShowDialog();
         }
     }
 }

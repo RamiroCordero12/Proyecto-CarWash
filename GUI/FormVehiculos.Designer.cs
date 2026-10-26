@@ -40,6 +40,13 @@ namespace GUI
             this.btnAgregar = new System.Windows.Forms.Button();
             this.btnModificar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
+            this.btnLimpiar = new System.Windows.Forms.Button();
+            this.panelFiltroVehiculos = new System.Windows.Forms.Panel();
+            this.lblFiltroDni = new System.Windows.Forms.Label();
+            this.txtFiltroDni = new System.Windows.Forms.TextBox();
+            this.btnBuscarVehiculo = new System.Windows.Forms.Button();
+            this.btnLimpiarFiltro = new System.Windows.Forms.Button();
+            this.lblTotalVehiculos = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.dgvClientes = new System.Windows.Forms.DataGridView();
             this.panelHeader.SuspendLayout();
@@ -95,19 +102,100 @@ namespace GUI
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvVehiculos.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvVehiculos.EnableHeadersVisualStyles = false;
-            this.dgvVehiculos.Location = new System.Drawing.Point(20, 80);
+            this.dgvVehiculos.Location = new System.Drawing.Point(20, 125);
             this.dgvVehiculos.Name = "dgvVehiculos";
             this.dgvVehiculos.ReadOnly = true;
             this.dgvVehiculos.RowHeadersVisible = false;
             this.dgvVehiculos.RowTemplate.Height = 35;
             this.dgvVehiculos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvVehiculos.Size = new System.Drawing.Size(650, 300);
+            this.dgvVehiculos.Size = new System.Drawing.Size(650, 255);
             this.dgvVehiculos.TabIndex = 1;
+            this.dgvVehiculos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvVehiculos_CellClick);
             this.dgvVehiculos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvVehiculos_CellContentClick);
+            // 
+            // panelFiltroVehiculos
+            // 
+            this.panelFiltroVehiculos.BackColor = System.Drawing.Color.White;
+            this.panelFiltroVehiculos.Controls.Add(this.lblTotalVehiculos);
+            this.panelFiltroVehiculos.Controls.Add(this.btnLimpiarFiltro);
+            this.panelFiltroVehiculos.Controls.Add(this.btnBuscarVehiculo);
+            this.panelFiltroVehiculos.Controls.Add(this.txtFiltroDni);
+            this.panelFiltroVehiculos.Controls.Add(this.lblFiltroDni);
+            this.panelFiltroVehiculos.Location = new System.Drawing.Point(20, 75);
+            this.panelFiltroVehiculos.Name = "panelFiltroVehiculos";
+            this.panelFiltroVehiculos.Size = new System.Drawing.Size(650, 42);
+            this.panelFiltroVehiculos.TabIndex = 8;
+            this.panelFiltroVehiculos.Paint += new System.Windows.Forms.PaintEventHandler(this.panelForm_Paint);
+            // 
+            // lblFiltroDni
+            // 
+            this.lblFiltroDni.AutoSize = true;
+            this.lblFiltroDni.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblFiltroDni.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(110)))), ((int)(((byte)(122)))));
+            this.lblFiltroDni.Location = new System.Drawing.Point(12, 13);
+            this.lblFiltroDni.Name = "lblFiltroDni";
+            this.lblFiltroDni.Size = new System.Drawing.Size(124, 15);
+            this.lblFiltroDni.TabIndex = 0;
+            this.lblFiltroDni.Text = "Filtrar por DNI cliente:";
+            // 
+            // txtFiltroDni
+            // 
+            this.txtFiltroDni.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.txtFiltroDni.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtFiltroDni.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.txtFiltroDni.Location = new System.Drawing.Point(142, 9);
+            this.txtFiltroDni.Name = "txtFiltroDni";
+            this.txtFiltroDni.Size = new System.Drawing.Size(170, 24);
+            this.txtFiltroDni.TabIndex = 1;
+            this.txtFiltroDni.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFiltroDni_KeyDown);
+            // 
+            // btnBuscarVehiculo
+            // 
+            this.btnBuscarVehiculo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(137)))), ((int)(((byte)(123)))));
+            this.btnBuscarVehiculo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBuscarVehiculo.FlatAppearance.BorderSize = 0;
+            this.btnBuscarVehiculo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBuscarVehiculo.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
+            this.btnBuscarVehiculo.ForeColor = System.Drawing.Color.White;
+            this.btnBuscarVehiculo.Location = new System.Drawing.Point(322, 7);
+            this.btnBuscarVehiculo.Name = "btnBuscarVehiculo";
+            this.btnBuscarVehiculo.Size = new System.Drawing.Size(110, 28);
+            this.btnBuscarVehiculo.TabIndex = 2;
+            this.btnBuscarVehiculo.Text = "🔍  Buscar / Filtrar";
+            this.btnBuscarVehiculo.UseVisualStyleBackColor = false;
+            this.btnBuscarVehiculo.Click += new System.EventHandler(this.btnBuscarVehiculo_Click);
+            // 
+            // btnLimpiarFiltro
+            // 
+            this.btnLimpiarFiltro.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(144)))), ((int)(((byte)(156)))));
+            this.btnLimpiarFiltro.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLimpiarFiltro.FlatAppearance.BorderSize = 0;
+            this.btnLimpiarFiltro.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLimpiarFiltro.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
+            this.btnLimpiarFiltro.ForeColor = System.Drawing.Color.White;
+            this.btnLimpiarFiltro.Location = new System.Drawing.Point(440, 7);
+            this.btnLimpiarFiltro.Name = "btnLimpiarFiltro";
+            this.btnLimpiarFiltro.Size = new System.Drawing.Size(95, 28);
+            this.btnLimpiarFiltro.TabIndex = 3;
+            this.btnLimpiarFiltro.Text = "⟳  Ver Todos";
+            this.btnLimpiarFiltro.UseVisualStyleBackColor = false;
+            this.btnLimpiarFiltro.Click += new System.EventHandler(this.btnLimpiarFiltro_Click);
+            // 
+            // lblTotalVehiculos
+            // 
+            this.lblTotalVehiculos.AutoSize = true;
+            this.lblTotalVehiculos.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblTotalVehiculos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(131)))), ((int)(((byte)(143)))));
+            this.lblTotalVehiculos.Location = new System.Drawing.Point(545, 13);
+            this.lblTotalVehiculos.Name = "lblTotalVehiculos";
+            this.lblTotalVehiculos.Size = new System.Drawing.Size(43, 15);
+            this.lblTotalVehiculos.TabIndex = 4;
+            this.lblTotalVehiculos.Text = "Total: 0";
             // 
             // panelForm
             // 
             this.panelForm.BackColor = System.Drawing.Color.White;
+            this.panelForm.Paint += new System.Windows.Forms.PaintEventHandler(this.panelForm_Paint);
             this.panelForm.Controls.Add(this.txtColor);
             this.panelForm.Controls.Add(this.label4);
             this.panelForm.Controls.Add(this.txtMarca);
@@ -258,10 +346,11 @@ namespace GUI
             this.btnAgregar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAgregar.FlatAppearance.BorderSize = 0;
             this.btnAgregar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAgregar.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnAgregar.ForeColor = System.Drawing.Color.White;
             this.btnAgregar.Location = new System.Drawing.Point(690, 390);
             this.btnAgregar.Name = "btnAgregar";
-            this.btnAgregar.Size = new System.Drawing.Size(120, 38);
+            this.btnAgregar.Size = new System.Drawing.Size(90, 36);
             this.btnAgregar.TabIndex = 3;
             this.btnAgregar.Text = "✚  Agregar";
             this.btnAgregar.UseVisualStyleBackColor = false;
@@ -273,10 +362,11 @@ namespace GUI
             this.btnModificar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnModificar.FlatAppearance.BorderSize = 0;
             this.btnModificar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnModificar.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnModificar.ForeColor = System.Drawing.Color.White;
-            this.btnModificar.Location = new System.Drawing.Point(820, 390);
+            this.btnModificar.Location = new System.Drawing.Point(785, 390);
             this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(120, 38);
+            this.btnModificar.Size = new System.Drawing.Size(95, 36);
             this.btnModificar.TabIndex = 4;
             this.btnModificar.Text = "✎  Modificar";
             this.btnModificar.UseVisualStyleBackColor = false;
@@ -288,14 +378,31 @@ namespace GUI
             this.btnEliminar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnEliminar.FlatAppearance.BorderSize = 0;
             this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEliminar.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnEliminar.ForeColor = System.Drawing.Color.White;
-            this.btnEliminar.Location = new System.Drawing.Point(950, 390);
+            this.btnEliminar.Location = new System.Drawing.Point(885, 390);
             this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(120, 38);
+            this.btnEliminar.Size = new System.Drawing.Size(90, 36);
             this.btnEliminar.TabIndex = 5;
             this.btnEliminar.Text = "✖  Eliminar";
             this.btnEliminar.UseVisualStyleBackColor = false;
             this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            // 
+            // btnLimpiar
+            // 
+            this.btnLimpiar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(144)))), ((int)(((byte)(156)))));
+            this.btnLimpiar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLimpiar.FlatAppearance.BorderSize = 0;
+            this.btnLimpiar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLimpiar.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnLimpiar.ForeColor = System.Drawing.Color.White;
+            this.btnLimpiar.Location = new System.Drawing.Point(980, 390);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(90, 36);
+            this.btnLimpiar.TabIndex = 6;
+            this.btnLimpiar.Text = "⟳  Limpiar";
+            this.btnLimpiar.UseVisualStyleBackColor = false;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
             // label8
             // 
@@ -353,11 +460,13 @@ namespace GUI
             this.ClientSize = new System.Drawing.Size(1100, 700);
             this.Controls.Add(this.dgvClientes);
             this.Controls.Add(this.label8);
+            this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.btnModificar);
             this.Controls.Add(this.btnAgregar);
             this.Controls.Add(this.panelForm);
             this.Controls.Add(this.dgvVehiculos);
+            this.Controls.Add(this.panelFiltroVehiculos);
             this.Controls.Add(this.panelHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -367,6 +476,8 @@ namespace GUI
             this.Load += new System.EventHandler(this.FormVehiculos_Load);
             this.panelHeader.ResumeLayout(false);
             this.panelHeader.PerformLayout();
+            this.panelFiltroVehiculos.ResumeLayout(false);
+            this.panelFiltroVehiculos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVehiculos)).EndInit();
             this.panelForm.ResumeLayout(false);
             this.panelForm.PerformLayout();
@@ -397,6 +508,13 @@ namespace GUI
         private System.Windows.Forms.Button btnAgregar;
         private System.Windows.Forms.Button btnModificar;
         private System.Windows.Forms.Button btnEliminar;
+        private System.Windows.Forms.Button btnLimpiar;
+        private System.Windows.Forms.Panel panelFiltroVehiculos;
+        private System.Windows.Forms.Label lblFiltroDni;
+        private System.Windows.Forms.TextBox txtFiltroDni;
+        private System.Windows.Forms.Button btnBuscarVehiculo;
+        private System.Windows.Forms.Button btnLimpiarFiltro;
+        private System.Windows.Forms.Label lblTotalVehiculos;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.DataGridView dgvClientes;
     }

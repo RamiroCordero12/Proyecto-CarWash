@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -42,9 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alertaentregabll.cs" />
+    <Compile Include="EstadisticaBLL.cs" />
     <Compile Include="Bitacora\RegistroBitacoraBLL.cs" />
     <Compile Include="ClienteBLL.cs" />
+        <Compile Include="BackupBLL.cs" />
     <Compile Include="LoginBLL.cs" />
+    <Compile Include="UsuarioBLL.cs" />
     <Compile Include="OperadorBLL.cs" />
     <Compile Include="PermisoBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
