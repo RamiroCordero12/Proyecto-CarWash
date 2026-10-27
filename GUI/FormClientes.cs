@@ -13,7 +13,7 @@ using BLL;
 
 namespace GUI
 {
-    public partial class FormClientes : Form
+    public partial class FormClientes : FormBase
     {
 
         private ClienteBLL bll = new ClienteBLL();

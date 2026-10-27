@@ -85,23 +85,20 @@ namespace GUI
 
             lblUsuarioSesion.Text = $"👤 {usuario.NombreUsuario} ({usuario.NombreCompleto})\n🔑 Rol: {rol.NombreRol}";
 
-            // Determinar si es un Administrador
-            bool esAdmin = rol.NombreRol.IndexOf("Admin", StringComparison.OrdinalIgnoreCase) >= 0;
-
-            // CU13, CU14, CU15, CU16: Seguridad y administración restringida por rol/permisos
-            bool tienePermisoOperarios = esAdmin || sesion.TienePermiso(6);    // Hoja: Operarios
-            bool tienePermisoBitacora = esAdmin || sesion.TienePermiso(7);     // Hoja: Bitacora
-            bool tienePermisoEstadisticas = esAdmin || sesion.TienePermiso(8); // Hoja: Estadisticas
-            bool tienePermisoSeguridad = esAdmin || sesion.TienePermiso(9);    // Hoja: Seguridad (Usuarios + Roles)
-            bool tienePermisoBackup = esAdmin || sesion.TienePermiso(10);      // Hoja: Backup
-
-            // Módulos administrativos: visibilidad según permisos
-            button1.Visible = tienePermisoOperarios;           // Operarios
-            btnMenuBitacora.Visible = tienePermisoBitacora;     // Bitácora
-            btnEstadisticas.Visible = tienePermisoEstadisticas; // Estadísticas
-            btnUsuarios.Visible = tienePermisoSeguridad;       // Usuarios (CU16)
-            btnRoles.Visible = tienePermisoSeguridad;          // Roles y Permisos (CU13, CU14, CU15)
-            btnBackup.Visible = tienePermisoBackup;            // Backup y Restore (CU17, CU18)
+            // Todo el menú se rige por el Composite de permisos (Rol -> Familias/Hojas).
+            // Ya no hay excepción por nombre de rol: si el rol no tiene la hoja, el botón no se ve.
+            btnMenuClientes.Visible = sesion.TienePermiso("Clientes");
+            btnMenuConsultas.Visible = sesion.TienePermiso("Clientes");
+            btnMenuVehiculos.Visible = sesion.TienePermiso("Vehiculos");
+            btnMenuServicios.Visible = sesion.TienePermiso("Servicios");
+            button2.Visible = sesion.TienePermiso("Turnos");                   // Turnos
+            btnTableroEntregas.Visible = sesion.TienePermiso("TableroEntregas");
+            button1.Visible = sesion.TienePermiso("Operarios");                // Operarios
+            btnMenuBitacora.Visible = sesion.TienePermiso("Bitacora");
+            btnEstadisticas.Visible = sesion.TienePermiso("Estadisticas");
+            btnUsuarios.Visible = sesion.TienePermiso("Seguridad");            // CU16
+            btnRoles.Visible = sesion.TienePermiso("Seguridad");               // CU13, CU14, CU15
+            btnBackup.Visible = sesion.TienePermiso("Backup");                 // CU17, CU18
         }
 
         private void gestorDeClientesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -226,6 +223,7 @@ namespace GUI
         {
             FormGestionRoles fr = new FormGestionRoles();
             fr.ShowDialog();
+            SesionActual.Instancia.RecargarPermisos(); // <-- NUEVA: por si se editó el rol del usuario logueado
             AplicarPermisos();
         }
 

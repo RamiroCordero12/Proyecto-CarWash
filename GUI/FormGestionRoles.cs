@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class FormGestionRoles : Form
+    public partial class FormGestionRoles : FormBase
     {
         private PermisoBLL permisoBLL = new PermisoBLL();
 
@@ -511,5 +511,10 @@ namespace GUI
         }
 
         #endregion
+
+        private void tabRoles_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

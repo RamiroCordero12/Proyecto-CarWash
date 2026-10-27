@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class FormConsultasCliente : Form
+    public partial class FormConsultasCliente : FormBase
     {
         private ClienteBLL bll = new ClienteBLL();
         private DataSet dsClientes;
@@ -82,6 +82,11 @@ namespace GUI
             txtBuscarApellido.Clear();
             txtTelefono.Clear();
             dgvConsulta.DataSource = dsClientes.Tables["Clientes"];
+        }
+
+        private void dgvConsulta_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

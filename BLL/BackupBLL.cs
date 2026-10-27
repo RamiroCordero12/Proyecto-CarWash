@@ -54,11 +54,28 @@ namespace BLL
 
             dal.RestaurarBackup(rutaOrigen);
 
-            bitacoraBLL.Registrar(
-                idUsuario: ObtenerIdUsuarioActual(),
-                accion: $"Restauración de base de datos desde copia de seguridad: {rutaOrigen}",
-                modulo: "BaseDeDatos",
-                criticidad: Criticidad.Alta);
+            // Ya restaurada la base, el usuario logueado puede no existir en ella (FK de Bitacora).
+            // Si falla con el usuario, se registra sin usuario para no mostrar un error falso.
+            try
+            {
+                bitacoraBLL.Registrar(
+                    idUsuario: ObtenerIdUsuarioActual(),
+                    accion: $"Restauración de base de datos desde copia de seguridad: {rutaOrigen}",
+                    modulo: "BaseDeDatos",
+                    criticidad: Criticidad.Alta);
+            }
+            catch
+            {
+                try
+                {
+                    bitacoraBLL.Registrar(
+                        idUsuario: null,
+                        accion: $"Restauración de base de datos desde copia de seguridad: {rutaOrigen}",
+                        modulo: "BaseDeDatos",
+                        criticidad: Criticidad.Alta);
+                }
+                catch { }
+            }
         }
     }
 }

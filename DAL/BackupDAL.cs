@@ -59,6 +59,8 @@ namespace DAL
                     try
                     {
                         cmd.ExecuteNonQuery();
+                        // La base fue reemplazada: las conexiones del pool quedaron obsoletas
+                        SqlConnection.ClearAllPools();
                     }
                     catch
                     {
@@ -78,3 +80,4 @@ namespace DAL
         }
     }
 }
+

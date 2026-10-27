@@ -12,7 +12,7 @@ using CarWash.BE;
 
 namespace GUI
 {
-    public partial class FormServiciosLavado : Form
+    public partial class FormServiciosLavado : FormBase
     {
         private ServicioLavadoBLL bll = new ServicioLavadoBLL();
         private List<ServiIndividual> serviciosDisponibles;

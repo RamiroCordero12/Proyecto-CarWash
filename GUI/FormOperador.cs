@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class FormOperador : Form
+    public partial class FormOperador : FormBase
     {
         private OperadorBLL bll = new OperadorBLL();
         private int idSeleccionado = 0;

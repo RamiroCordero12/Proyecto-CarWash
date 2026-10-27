@@ -28,8 +28,6 @@ namespace GUI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelHeader = new System.Windows.Forms.Panel();
             this.lblTitulo = new System.Windows.Forms.Label();
             this.panelFiltros = new System.Windows.Forms.Panel();
@@ -68,7 +66,7 @@ namespace GUI
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
             this.lblTitulo.Location = new System.Drawing.Point(20, 13);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(287, 32);
+            this.lblTitulo.Size = new System.Drawing.Size(294, 32);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "🔍  Consultas de Clientes";
             // 
@@ -98,7 +96,7 @@ namespace GUI
             this.lblFiltrosTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(131)))), ((int)(((byte)(143)))));
             this.lblFiltrosTitle.Location = new System.Drawing.Point(12, 8);
             this.lblFiltrosTitle.Name = "lblFiltrosTitle";
-            this.lblFiltrosTitle.Size = new System.Drawing.Size(129, 19);
+            this.lblFiltrosTitle.Size = new System.Drawing.Size(131, 19);
             this.lblFiltrosTitle.TabIndex = 0;
             this.lblFiltrosTitle.Text = "Filtros de búsqueda";
             // 
@@ -180,7 +178,7 @@ namespace GUI
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(110)))), ((int)(((byte)(122)))));
             this.label4.Location = new System.Drawing.Point(270, 90);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 15);
+            this.label4.Size = new System.Drawing.Size(53, 15);
             this.label4.TabIndex = 8;
             this.label4.Text = "Teléfono";
             // 
@@ -248,6 +246,7 @@ namespace GUI
             this.dgvConsulta.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvConsulta.Size = new System.Drawing.Size(860, 270);
             this.dgvConsulta.TabIndex = 4;
+            this.dgvConsulta.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvConsulta_CellContentClick);
             // 
             // FormConsultasCliente
             // 

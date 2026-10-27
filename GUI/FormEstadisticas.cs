@@ -10,7 +10,7 @@ using CarWash.BE;
 
 namespace GUI
 {
-    public partial class FormEstadisticas : Form
+    public partial class FormEstadisticas : FormBase
     {
         private readonly EstadisticaBLL bll = new EstadisticaBLL();
 

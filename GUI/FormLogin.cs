@@ -13,7 +13,7 @@ using CarWash.BE;
 
 namespace GUI
 {
-    public partial class FormLogin : Form
+    public partial class FormLogin : FormBase
     {
         private LoginBLL bll = new LoginBLL();
         public Usuario UsuarioLogueado { get; private set; }

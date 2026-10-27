@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class FormTurnos : Form
+    public partial class FormTurnos : FormBase
     {
         private TurnoBLL bll = new TurnoBLL();
         private VehiculoBLL vehiculoBll = new VehiculoBLL();

@@ -14,7 +14,7 @@ using CarWash.BE.Bitacora;
 
 namespace GUI
 {
-    public partial class FormBitacora : Form
+    public partial class FormBitacora : FormBase
     {
         private RegistroBitacoraBLL bll = new RegistroBitacoraBLL();
 

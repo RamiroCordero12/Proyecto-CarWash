@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class FormGestionUsuarios : Form
+    public partial class FormGestionUsuarios : FormBase
     {
         private UsuarioBLL usuarioBLL = new UsuarioBLL();
         private PermisoBLL permisoBLL = new PermisoBLL();

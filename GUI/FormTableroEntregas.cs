@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class FormTableroEntregas : Form
+    public partial class FormTableroEntregas : FormBase
     {
         private readonly Alertaentregabll bll = new Alertaentregabll();
         private readonly TurnoBLL turnoBll = new TurnoBLL();

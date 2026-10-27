@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace GUI
 {
-    public partial class FormBackup : Form
+    public partial class FormBackup : FormBase
     {
         private BackupBLL backupBLL = new BackupBLL();
 
@@ -136,10 +136,13 @@ namespace GUI
                 lblEstado.Text = $"Base de datos restaurada exitosamente a las {DateTime.Now:HH:mm:ss}.";
                 MessageBox.Show(
                     "La base de datos CarWashDB ha sido restaurada con éxito desde la copia seleccionada.\n" +
-                    "Se recomienda reiniciar la sesión para recargar los datos actualizados.",
+                    "La aplicación se reiniciará para cargar los datos restaurados.",
                     "Restauración Completada",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
+
+                // La sesión y los datos en memoria pertenecen a la base anterior: se reinicia la app
+                Application.Restart();
             }
             catch (Exception ex)
             {

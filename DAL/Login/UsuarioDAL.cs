@@ -223,15 +223,13 @@ namespace DAL
                     throw new InvalidOperationException($"No se puede eliminar el usuario porque tiene {turnos} turno(s) registrado(s) en auditoría.");
 
                 // Bitácora registros con IdUsuario
-                // En RegistroBitacora, IdUsuario es FK nullable o NOT NULL?
-                // En ScriptBD.sql: FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario) ON DELETE SET NULL si fuera, o verificar
-                var cmdBit = new SqlCommand("SELECT COUNT(1) FROM RegistroBitacora WHERE IdUsuario = @IdUsuario", conn);
+                var cmdBit = new SqlCommand("SELECT COUNT(1) FROM Bitacora WHERE IdUsuario = @IdUsuario", conn);
                 cmdBit.Parameters.AddWithValue("@IdUsuario", idUsuario);
                 int bitacoraCount = (int)cmdBit.ExecuteScalar();
                 if (bitacoraCount > 0)
                 {
                     // Si tiene bitácora, desvincular o impedir
-                    var cmdNull = new SqlCommand("UPDATE RegistroBitacora SET IdUsuario = NULL WHERE IdUsuario = @IdUsuario", conn);
+                    var cmdNull = new SqlCommand("UPDATE Bitacora SET IdUsuario = NULL WHERE IdUsuario = @IdUsuario", conn);
                     cmdNull.Parameters.AddWithValue("@IdUsuario", idUsuario);
                     cmdNull.ExecuteNonQuery();
                 }

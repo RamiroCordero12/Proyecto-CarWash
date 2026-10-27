@@ -124,6 +124,15 @@ namespace BLL.Idioma
             return fallback ?? clave;
         }
 
+        // Traduce un texto fijo escrito en español (el que viene de los Designer de los formularios).
+        // En ES devuelve el original; en EN lo busca en DiccionarioTextos.
+        public string TraducirTexto(string textoEspanol)
+        {
+            if (string.IsNullOrWhiteSpace(textoEspanol)) return textoEspanol;
+            if (IdiomaActual.Equals("ES", StringComparison.OrdinalIgnoreCase)) return textoEspanol;
+            return DiccionarioTextos.Traducir(textoEspanol);
+        }
+
         private void InicializarDiccionarios()
         {
             var es = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)

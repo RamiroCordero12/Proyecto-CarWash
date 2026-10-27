@@ -13,7 +13,7 @@ using CarWash.BE;
 
 namespace GUI
 {
-    public partial class FormVehiculos : Form
+    public partial class FormVehiculos : FormBase
     {
         private VehiculoBLL bll = new VehiculoBLL();
         private int idVehiculoSeleccionado = 0;
