@@ -220,16 +220,50 @@ BEGIN
 END;
 GO
 -- =============================================
--- 6. USUARIO BASICO PARA LOGIN DE PRUEBAS
+-- 6. USUARIOS ADMINISTRADORES PARA LOGIN DE PRUEBAS
 -- =============================================
-INSERT INTO Roles (NombreRol, DescRol)
-VALUES ('AdminBasico', 'Rol creado para las pruebas')
+-- Crea el rol si no existe y asigna el usuario a ese rol.
+-- Los permisos se conceden al final, cuando ya existen las hojas.
+IF NOT EXISTS (SELECT 1 FROM Roles WHERE NombreRol = 'AdminBasico')
+BEGIN
+    INSERT INTO Roles (NombreRol, DescRol)
+    VALUES ('AdminBasico', 'Administrador con acceso completo');
+END;
 GO
 
-INSERT INTO Usuario (Nombre, Apellido, Email, NombreUsuario,
-    Contrasena, CodRol)
-VALUES ('Ramiro', 'Cordero', 'cordero14@gmail.com', 'ramiro',
-    '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 1)
+DECLARE @CodRolAdmin INT;
+SET @CodRolAdmin = (SELECT TOP 1 CodRol FROM Roles WHERE NombreRol = 'AdminBasico' ORDER BY CodRol);
+
+IF EXISTS (SELECT 1 FROM Usuario WHERE NombreUsuario = 'ramiro')
+BEGIN
+    UPDATE Usuario
+    SET Contrasena = LOWER(CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', '1234'), 2)),
+        CodRol = @CodRolAdmin
+    WHERE NombreUsuario = 'ramiro';
+END
+ELSE
+BEGIN
+    INSERT INTO Usuario (Nombre, Apellido, Email, NombreUsuario, Contrasena, CodRol)
+    VALUES ('Ramiro', 'Cordero', 'cordero14@gmail.com', 'ramiro',
+            LOWER(CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', '1234'), 2)),
+            @CodRolAdmin);
+END;
+
+-- Crear o actualizar a Joaquin con el mismo rol y clave de prueba.
+IF EXISTS (SELECT 1 FROM Usuario WHERE NombreUsuario = 'joaquin')
+BEGIN
+    UPDATE Usuario
+    SET Contrasena = LOWER(CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', '1234'), 2)),
+        CodRol = @CodRolAdmin
+    WHERE NombreUsuario = 'joaquin';
+END
+ELSE
+BEGIN
+    INSERT INTO Usuario (Nombre, Apellido, Email, NombreUsuario, Contrasena, CodRol)
+    VALUES ('Joaquin', 'Usuario', NULL, 'joaquin',
+            LOWER(CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', '1234'), 2)),
+            @CodRolAdmin);
+END;
 GO
 
 -- =============================================
@@ -313,4 +347,30 @@ GO
 INSERT INTO Rol_Fam (CodRol, CodFam)
 VALUES ((SELECT CodRol FROM Roles WHERE NombreRol = 'Operador'),
         (SELECT CodFam FROM Familia WHERE NombreFamilia = 'Operaciones'));
+GO
+
+-- =============================================
+-- 9. ACCESO COMPLETO PARA EL ROL ADMINBASICO
+-- =============================================
+-- La tabla Hojas ya está cargada. Asignamos todas las hojas
+-- directamente al rol, sin duplicar relaciones existentes.
+DECLARE @CodRolAdmin INT;
+SET @CodRolAdmin = (SELECT TOP 1 CodRol FROM Roles WHERE NombreRol = 'AdminBasico' ORDER BY CodRol);
+
+INSERT INTO Rol_Pat (CodRol, CodHoja)
+SELECT @CodRolAdmin, H.CodHoja
+FROM Hojas AS H
+WHERE NOT EXISTS (
+    SELECT 1 FROM Rol_Pat AS RP
+    WHERE RP.CodRol = @CodRolAdmin AND RP.CodHoja = H.CodHoja
+);
+GO
+
+-- Comprobación: usuario, rol y permisos directos asignados
+SELECT U.NombreUsuario, R.NombreRol, COUNT(DISTINCT RP.CodHoja) AS PermisosDirectos
+FROM Usuario AS U
+INNER JOIN Roles AS R ON U.CodRol = R.CodRol
+LEFT JOIN Rol_Pat AS RP ON RP.CodRol = R.CodRol
+WHERE U.NombreUsuario IN ('ramiro', 'joaquin')
+GROUP BY U.NombreUsuario, R.NombreRol;
 GO
